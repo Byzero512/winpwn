@@ -9,7 +9,7 @@ mini pwntools on windows
 > testing
 
 ## problems:
-1. how to wait for debugger attach? gdb is complete;
+1. how to wait for debugger attach? gdb is completed;
 2. how to use ".shell" on windbg?? It always error;
 3. for x64dbg, it has no command line options to exec cmd when attach
 
