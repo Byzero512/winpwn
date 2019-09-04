@@ -17,3 +17,6 @@ mini pwntools on windows
 1. based on pythonforwindows, pwintools
 
 ## install
+1. pip install pythonforwindows
+2. git clone 
+3. python setup.py install
