@@ -22,9 +22,10 @@ mini pwntools on windows
 3. python setup.py install
 
 ## tips
-1. to use gdb(lke gdb-peda): you need 
+1. to use gdb(lke gdb-peda): you need
   + wibe: https://github.com/Byzero512/wibe
   + vmmap: https://github.com/Byzero512/vmmap-win-cmd
+  + if you use cmder, please run in "cmd::cmder as admin", can not run in "bash"
 2. for debuggers, you need to modify the PATH of debugger in winpwn/var.py
 3. for terminal, I just test on cmder
 
