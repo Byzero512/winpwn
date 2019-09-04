@@ -10,7 +10,7 @@ mini pwntools on windows
 
 ## problems:
 1. how to wait for debugger attach? 
-3. I am not familiar with windbg and x64dbg, so it may not support them
+3. I am not familiar with windbg and x64dbg, so the support with them may be not quite useful yet
 
 ## pre
 1. based on pwintools, but I complete the part of IO interact
