@@ -25,7 +25,7 @@ mini pwntools on windows
 1. to use gdb(lke gdb-peda): you need 
   + wibe: https://github.com/Byzero512/wibe
   + vmmap: https://github.com/Byzero512/vmmap-win-cmd
-2. for debuggers, you need to modify the PATH of debugger in var.py
+2. for debuggers, you need to modify the PATH of debugger in winpwn/var.py
 3. for terminal, I just test on cmder
 
 ## photos
