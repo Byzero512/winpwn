@@ -29,4 +29,4 @@ mini pwntools on windows
 3. for terminal, I just test on cmder
 
 ## photos
-![enter description here](./img/winpwn1.jpg)
+![enter description here](./img/winpwn1.png)
