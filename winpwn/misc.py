@@ -7,9 +7,7 @@ from context import context
 def run_in_new_terminal(command, terminal = None, args = None):
     if terminal is None:
         if (context.terminal):
-            terminal=context.terminal[0]
-            if len(context.terminal)>1:
-                args=context.terminal[1:]
+            terminal=[context.terminal]
         else:
             terminal=['ConEmu.exe','-Reuse','-run']
     if isinstance(args, tuple):    # args associety with tmminal not process
@@ -18,6 +16,7 @@ def run_in_new_terminal(command, terminal = None, args = None):
         argv=terminal+args
     else:
         argv=terminal
+    # print(argv,command)
     if isinstance(command,str):
         argv+=[command]          # [terminal,args,command]
     elif isinstance(command,(list,tuple)):
