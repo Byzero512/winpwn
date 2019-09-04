@@ -18,5 +18,11 @@ mini pwntools on windows
 
 ## install
 1. pip install pythonforwindows
-2. git clone 
+2. git clone https://github.com/Byzero512/winpwn.git
 3. python setup.py install
+
+## tips
+1. to use gdb(lke gdb-peda): you need 
+  wibe: 
+  vmmap: 
+2. for debugger, you need to modify the PATH of debugger in var.py
