@@ -9,12 +9,11 @@ mini pwntools on windows
 > testing
 
 ## problems:
-1. how to wait for debugger attach? gdb is completed;
-2. how to use ".shell" on windbg?? It always error;
-3. for x64dbg, it has no command line options to exec cmd when attach
+1. how to wait for debugger attach? 
+3. I am not familiar with windbg and x64dbg, so it may not support them
 
 ## pre
-1. based on pythonforwindows, pwintools
+1. based on pwintools, but I complete the part of IO interact
 
 ## install
 1. pip install pythonforwindows
