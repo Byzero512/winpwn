@@ -11,8 +11,8 @@
 1. pip install pythonforwindows
 1. python setup.py install
 
-
-
+> if you want to debug, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
+> I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
 
 ### usage
@@ -44,19 +44,24 @@
 
    1. windbg\.attach\(p\): can not parse script file yet
 
-### demands
-1. shellcode(I delete this funcitons exisit in pwintools, because I do not want to import too many deps)
-2. complete debugger module for x64dbg (I have no good idea to wait for debugger to let it have enough time to execs the command when attach to it, and I am not familiar with x64dbg) 
 
 
-### others
+### deps
 
+#### mingw-gdb
 for gdb-peda like show  as bellow, you need:
 
 1. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
-1. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" on wibe)
-2. for debuggers, you need to modify the PATH of debugger in <b>winpwn/var.py</b>
-3. I just test winpwn on cmder(please use <b>"cmd::cmder as Admin"</b>, not bash)
+2. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" on wibe)
+
+#### windbg
+1. pykd
+2. TWindbg: https://github.com/bruce30262/TWindbg
+
+
+### demands
+1. shellcode(I delete this funcitons exisit in pwintools, because I do not want to import too many deps)
+2. complete debugger module for x64dbg (I have no good idea to wait for debugger to let it have enough time to execs the command when attach to it, and I am not familiar with x64dbg) 
 
 ## photos
 
