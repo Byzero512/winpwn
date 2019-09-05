@@ -243,9 +243,9 @@ class Remote(object):
         self.set_timeout(self._timeout)
 
         self._closed = False
-        # self.newline = '\r\n'
+        # context.newline = '\r\n'
         # if context.newline:
-        self.newline=context.newline
+        # context.newline=context.newline
     
     def __repr__(self):
         return '<{0} "{1}:{2}" at {3}>'.format(self.__class__.__name__, self.ip, self.port, hex(id(self)))
@@ -327,7 +327,7 @@ class Remote(object):
         
     def sendline(self, line):
         """sendline(line) sends the line adding newline to the process stdin"""
-        self.write(line + self.newline)
+        self.write(line + context.newline)
 
     # try to read, no exception
     def recv(self, n, timeout = None):
@@ -402,7 +402,7 @@ class Remote(object):
     # base on recvuntil(); show on recvuntil
     def recvline(self, timeout = None):
         """recvline(timeout = None) reads one line on the process stdout before timeout"""
-        return self.recvuntil(self.newline, timeout)
+        return self.recvuntil(context.newline, timeout)
             
     def interactive(self, escape = False):
         print(parse.mark('interact'))
@@ -428,9 +428,9 @@ class Process(windows.winobject.process.WinProcess):
         self.cmd = target
         self.flags = flags
         self.stdhandles = not nostdhandles
-        # self.newline = '\r\n'
+        # context.newline = '\r\n'
         # if context.newline:
-        self.newline=context.newline
+        # context.newline=context.newline
         if self.stdhandles:
             self.stdin = Pipe()
             self.stdout = Pipe()
@@ -574,7 +574,7 @@ class Process(windows.winobject.process.WinProcess):
         
     def sendline(self, line):
         """sendline(line) sends the line adding newline to the process stdin"""
-        self.write(line + self.newline)
+        self.write(line + context.newline)
 
     # try to read, no exception
     def recv(self, n, timeout = None):
@@ -649,7 +649,7 @@ class Process(windows.winobject.process.WinProcess):
     # base on recvuntil(); show on recvuntil
     def recvline(self, timeout = None):
         """recvline(timeout = None) reads one line on the process stdout before timeout"""
-        return self.recvuntil(self.newline, timeout)
+        return self.recvuntil(context.newline, timeout)
             
     def interactive(self, escape = False):
         print(parse.mark('interact'))
