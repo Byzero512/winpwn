@@ -33,13 +33,13 @@ class gdb():
         """
             use context.arch or gdbType to decide mingw-gdb64 or mingw-gdb to be used
         """
-        # clx.gdbType=gdbType        # mingw-gdb or windbg, mingw-gdb in default
-        clx.gdbType=var.debugger[context.arch]['gdb']
+        # gdbType=gdbType        # mingw-gdb or windbg, mingw-gdb in default
+        gdbType=var.debugger[context.arch]['gdb']
         load_Dbg=None        # how to attach to process and init debugger
         if isinstance(target,process):
-            load_Dbg=clx.gdbType+' -p'+' {}'.format(target.pid)+' -q'
+            load_Dbg=gdbType+' -p'+' {}'.format(target.pid)+' -q'
         elif isinstance(target,int):
-            load_Dbg=clx.gdbType+' -p'+' {}'.format(target)+' -q'
+            load_Dbg=gdbType+' -p'+' {}'.format(target)+' -q'
         # if script and not script.endswith('\n'):
         #     # script+='\n'
         #     pass
@@ -91,10 +91,12 @@ class windbg():
         tmp.flush()
         tmp.close()
         load_windbg+=['$$><{}'.format(tmp.name)+';.shell -x del {}'.format(tmp.name)]
-        # print('script:',script)
-        # print('load:',load_windbg)
+        print('script:',script)
+        print('load:',load_windbg)
         ter=subprocess.Popen(load_windbg)
         while(os.path.exists(tmp.name)):    # wait_for_debugger
+            # misc.waiting_for_debugger()
+            # print('waiting')
             pass
         var.ter=ter
         return var.ter.pid
@@ -106,13 +108,7 @@ class windbg():
 class x64dbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        clx.gdbType=gdbType        # mingw-gdb or windbg, mingw-gdb in default
-        if clx.gdbType is None:
-            if context.arch=='amd64':
-                clx.gdbType='x64dbg.exe'      # have been place into $PATH
-            else:
-                clx.gdbType='x32dbg.exe'
-        load_x64dbg=[clx.gdbType,'-p']
+        load_x64dbg=[var.debugger[context.arch]['x64dbg'],'-p']
         if isinstance(target,process):
             load_x64dbg.append(str(target.pid))
         elif isinstance(target,int):
