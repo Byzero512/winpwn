@@ -243,9 +243,9 @@ class Remote(object):
         self.set_timeout(self._timeout)
 
         self._closed = False
-        self.newline = '\r\n'
-        if context.newline:
-            self.newline=context.newline
+        # self.newline = '\r\n'
+        # if context.newline:
+        self.newline=context.newline
     
     def __repr__(self):
         return '<{0} "{1}:{2}" at {3}>'.format(self.__class__.__name__, self.ip, self.port, hex(id(self)))
@@ -428,9 +428,9 @@ class Process(windows.winobject.process.WinProcess):
         self.cmd = target
         self.flags = flags
         self.stdhandles = not nostdhandles
-        self.newline = '\r\n'
-        if context.newline:
-            self.newline=context.newline
+        # self.newline = '\r\n'
+        # if context.newline:
+        self.newline=context.newline
         if self.stdhandles:
             self.stdin = Pipe()
             self.stdout = Pipe()
