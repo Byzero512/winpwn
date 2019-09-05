@@ -3,8 +3,8 @@ class context():
     arch='i386'
     endian='little'
     #aslr=True
-    log_level=None
-    terminal=None
+    log_level=""
+    terminal=[]
     timeout=None
     length=None
-    newline=None
+    newline='\r\n'
