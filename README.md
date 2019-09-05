@@ -29,13 +29,13 @@
 
    1. context\.debugger=None
 
-   1. endian="little"
+   1. context\.endian="little"
 
-   1. log\_level=None
+   1. context\.log\_level=""
 
-   1. terminal=None
+   1. context\.terminal=\[\]
 
-   1. newline=None \(because newline may be "\\n" or "\\r\\n", default is "\\r\\n", you can set it with this attr\)
+   1. context\.newline=None \(because newline may be "\\n" or "\\r\\n", default is "\\r\\n", you can set it with this attr\)
 1. dbg: gdb\(mingw gdb\), windbg, x64dbg
 
    1. gdb\.attach\(p, script="b \*0x401000"\)
