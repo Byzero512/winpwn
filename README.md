@@ -27,7 +27,7 @@
 
    1. context\.timeout=None
 
-   1. context\.debugger=None
+   1. context\.debugger=""
 
    1. context\.endian="little"
 
