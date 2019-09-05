@@ -11,8 +11,8 @@
 1. pip install pythonforwindows
 1. python setup.py install
 
-> if you want to debug, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
-> I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
+> 1. if you want to debug, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
+> 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
 
 ### usage
