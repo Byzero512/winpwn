@@ -52,7 +52,7 @@ for gdb-peda like show  as bellow, you need:
 
 1. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
 1. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap")
-2. for debuggers, you need to modify the PATH of debugger in winpwn/var.py
+2. for debuggers, you need to modify the PATH of debugger in <b>winpwn/var.py</b>
 3. I just test winpwn on cmder(please use <b>"cmd::cmder as Admin"</b>, not bash)
 
 ## photos
