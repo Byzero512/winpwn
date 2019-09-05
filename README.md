@@ -74,3 +74,6 @@ for gdb-peda like show  as bellow, you need:
 
 
 ![windbg](./img/winpwn2.png)
+
+### x64dbg
+not support {x64dbg.attach(p,"b*??")} yet
