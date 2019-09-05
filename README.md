@@ -48,10 +48,10 @@
 
 ### others
 
-for gdb\-peda like show  as bellow, you need:
+for gdb-peda like show  as bellow, you need:
 
 1. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
-1. https://github.com/Byzero512/vmmap\-win\-cmd (for the command "vmmap")
+1. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap")
 2. for debuggers, you need to modify the PATH of debugger in winpwn/var.py
 3. for terminal, I just test on cmder
 
