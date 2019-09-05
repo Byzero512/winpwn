@@ -9,7 +9,7 @@ from pwintools import Process as process
 
 class dbg(object):
     @classmethod
-    def attach(clx,target,script=None,sysroot=None):
+    def attach(clx,target,script="",sysroot=None):
         """
             use context.debugger or gdbType to decide use which debugger
                 default is mingw-gdb
@@ -24,12 +24,12 @@ class dbg(object):
             return None
 
     @classmethod
-    def debug(clx,target,script=None,sysroot=None):
+    def debug(clx,target,script="",sysroot=None):
         pass
 
 class gdb():
     @classmethod
-    def attach(clx,target,script=None,sysroot=None):
+    def attach(clx,target,script="",sysroot=None):
         """
             use context.arch or gdbType to decide mingw-gdb64 or mingw-gdb to be used
         """
@@ -77,44 +77,35 @@ class gdb():
 
 class windbg():
     @classmethod
-    def attach(clx,target,script=None,sysroot=None):
+    def attach(clx,target,script="",sysroot=None):
         load_windbg=[var.debugger[context.arch]['windbg'],'-p']
         if isinstance(target,process):
             load_windbg.append(str(target.pid))
         elif isinstance(target,int):
             load_windbg.append(str(pid))
-        load_windbg+=['-a','pykd']  # laad ext
+        # load_windbg+=['-a','pykd']  # laad ext
         load_windbg+=['-c']             # exec command
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        # cmd='!py -g winext\TWindbg\TWindbg.py\n'
-        cmd=""
-        if script:
-            cmd=script+'\n'+cmd                       # how to delete the files
-        tmp.write(cmd)
+        # script+='\n!py -g winext\TWindbg\TWindbg.py\n'
+        tmp.write(script)
         tmp.flush()
         tmp.close()
-        load_windbg+=['$$><{}'.format(tmp.name)+';.shell del {}'.format(tmp.name)]
-        # load_windbg+=['$<{}'.format(tmp.name)]
-        #load_windbg.append(cmd)
-        # print(cmd)
-        # print(load_windbg)
+        load_windbg+=['$$><{}'.format(tmp.name)+';.shell -x del {}'.format(tmp.name)]
+        # print('script:',script)
+        # print('load:',load_windbg)
         ter=subprocess.Popen(load_windbg)
-        # print(misc.parse.color("\n[=]: Waiting for debugger","purple"))
-        # print("===========================")
-        # misc.waiting_for_debugger()
-        # os.remove(tmp.name)
         while(os.path.exists(tmp.name)):    # wait_for_debugger
             pass
         var.ter=ter
         return var.ter.pid
 
     @classmethod
-    def debug(clx,target,script=None,sysroot=None):
+    def debug(clx,target,script="",sysroot=None):
         pass
 
 class x64dbg():
     @classmethod
-    def attach(clx,target,script=None,sysroot=None):
+    def attach(clx,target,script="",sysroot=None):
         clx.gdbType=gdbType        # mingw-gdb or windbg, mingw-gdb in default
         if clx.gdbType is None:
             if context.arch=='amd64':
@@ -132,5 +123,5 @@ class x64dbg():
         return var.ter.pid                
 
     @classmethod
-    def debug(clx,target,script=None,sysroot=None):
+    def debug(clx,target,script="",sysroot=None):
         pass
