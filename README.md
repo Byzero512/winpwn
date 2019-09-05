@@ -1,30 +1,57 @@
-# winpwn
-mini pwntools on windows
+## winpwn: mini pwntools on windows
 
-1. process
-2. remote
-3. context
-4. dbg: gdb(mingw gdb), windbg, x64dbg
+### pre
 
-> testing
-
-## problems:
-1. how to wait for debugger attach? 
-3. I am not familiar with windbg and x64dbg, so the support with them may be not quite useful yet
-
-## pre
-1. based on pwintools, but I complete the part of IO interact
+> base on pwintools, but I complete the parts of IO interactive and debug
 
 ## install
-1. pip install pythonforwindows
-2. git clone https://github.com/Byzero512/winpwn.git
-3. python setup.py install
 
-## tips
-1. to use gdb(lke gdb-peda): you need
-  + wibe: https://github.com/Byzero512/wibe
-  + vmmap: https://github.com/Byzero512/vmmap-win-cmd
-  + if you use cmder, please run in "cmd::cmder as admin", can not run in "bash"
+1. git clone  https://github.com/Byzero512/winpwn.git
+1. cd winpwn
+1. pip install pythonforwindows
+1. python setup.py install
+
+
+
+
+
+### usage
+
+1. process
+
+   1. process\("./pwn"\)
+1. remote
+
+   1. remote\("127.0.0.1", 65535\)
+1. context
+
+   1. context\.timeout=None
+
+   1. context\.debugger=None
+
+   1. endian="little"
+
+   1. log\_level=None
+
+   1. terminal=None
+
+   1. newline=None \(because newline may be "\\n" or "\\r\\n", default is "\\r\\n", you can set it with this attr\)
+1. dbg: gdb\(mingw gdb\), windbg, x64dbg
+
+   1. gdb\.attach\(p, script="b \*0x401000"\)
+
+   1. x64dbg\.attach\(p\): can not parse script file yet
+
+   1. windbg\.attach\(p\): can not parse script file yet
+
+
+
+### others
+
+for gdb\-peda like show  as bellow, you need:
+
+1. https://github.com/Byzero512/wibe
+1. https://github.com/Byzero512/vmmap\-win\-cmd
 2. for debuggers, you need to modify the PATH of debugger in winpwn/var.py
 3. for terminal, I just test on cmder
 
