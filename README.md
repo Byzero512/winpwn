@@ -60,7 +60,7 @@ for gdb-peda like show  as bellow, you need:
 
 
 ### demands
-1. shellcode(I delete this funcitons exisit in pwintools, because I do not want to import too many deps)
+1. shellcode(I delete these funcitons exisit in pwintools, because I do not want to import too many deps)
 2. complete debugger module for x64dbg (I have no good idea to wait for debugger to let it have enough time to execs the command when attach to it, and I am not familiar with x64dbg) 
 
 ## photos
