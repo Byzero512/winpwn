@@ -31,9 +31,9 @@
 
    1. context\.endian="little"
 
-   1. context\.log\_level=""
+   1. context\.log\_level="\r\n"
 
-   1. context\.terminal=\[\]
+   1. context\.terminal=\[\ ]
 
    1. context\.newline=None \(because newline may be "\\n" or "\\r\\n", default is "\\r\\n", you can set it with this attr\)
 1. dbg: gdb\(mingw gdb\), windbg, x64dbg
