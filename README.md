@@ -59,4 +59,10 @@ for gdb-peda like show  as bellow, you need:
 3. I just test winpwn on cmder(please use <b>"cmd::cmder as Admin"</b>, not bash)
 
 ## photos
-![enter description here](./img/winpwn1.png)
+
+### mingw gdb
+
+![gdb](./img/winpwn1.png)
+
+### windbg
+![windbg](./img/winpwn2.png)
