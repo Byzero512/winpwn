@@ -91,8 +91,8 @@ class windbg():
         tmp.flush()
         tmp.close()
         load_windbg+=['$$><{}'.format(tmp.name)+';.shell -x del {}'.format(tmp.name)]
-        print('script:',script)
-        print('load:',load_windbg)
+        # print('script:',script)
+        # print('load:',load_windbg)
         ter=subprocess.Popen(load_windbg)
         while(os.path.exists(tmp.name)):    # wait_for_debugger
             # misc.waiting_for_debugger()
