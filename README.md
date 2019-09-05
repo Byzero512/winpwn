@@ -46,7 +46,7 @@
 
 ### demands
 1. shellcode(I delete this funcitons exisit in pwintools, because I do not want to import too many deps)
-2. complete debugger module for x64dbg and windbg(I have no good idea to wait for debugger to let it have enough time to execs the command when attach to it, and I am not familiar with x64dbg and windbg) 
+2. complete debugger module for x64dbg (I have no good idea to wait for debugger to let it have enough time to execs the command when attach to it, and I am not familiar with x64dbg) 
 
 
 ### others
