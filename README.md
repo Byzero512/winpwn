@@ -50,6 +50,7 @@
 
 #### mingw-gdb
 for gdb-peda like show  as bellow, you need:
+> mingw-gdb installer: https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/gdb/
 
 1. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
 2. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" on wibe)
