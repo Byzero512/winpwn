@@ -47,6 +47,7 @@
 
 
 ### deps
+> if you want to use debugger module, you need to deal with the deps yourself
 
 #### mingw-gdb
 for gdb-peda like show  as bellow, you need:
