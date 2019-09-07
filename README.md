@@ -40,9 +40,9 @@
 
    1. gdb\.attach\(p, script="b \*0x401000"\)
 
-   1. x64dbg\.attach\(p\,script="bp 0x123456")
+   1. windbg\.attach\(p\,script="bp 0x123456")
 
-   1. windbg\.attach\(p\): can not parse script file yet
+   1. x64dbg\.attach\(p\): can not parse script file yet
 
 
 
