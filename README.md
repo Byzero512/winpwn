@@ -1,18 +1,26 @@
 ## winpwn: mini pwntools on windows
 
 ### pre
-
-> base on pwintools, but I complete the parts of IO interactive and debug
+> 1. there are two versions of winpwn: winpwn-deps and winpwn-no-deps
+> for winpwn-deps: based on pwintools,but I complete the IO interactive and debug module
+> for winpwn-no-deps: written by myself. It just use ctypes to invoke windows api. It support python2.7 and python3
 
 ## install
+> 1. if you want to debug, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
+> 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
+### winpwn-deps
 1. git clone  https://github.com/Byzero512/winpwn.git
 1. cd winpwn
 1. pip install pythonforwindows
 1. python setup.py install
 
-> 1. if you want to debug, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
-> 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
+### winpwn-nodeps
+1. git clone  https://github.com/Byzero512/winpwn.git
+2. cd winpwn\winpwn-nodeps
+3. python setup.py install
+
+
 
 
 ### usage
