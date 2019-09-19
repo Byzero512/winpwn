@@ -2,8 +2,8 @@
 
 ### pre
 > 1. there are two versions of winpwn: winpwn-deps and winpwn-no-deps
-> for winpwn-deps: based on pwintools,but I complete the IO interactive and debug module
-> for winpwn-no-deps: written by myself. It just use ctypes to invoke windows api. It support python2.7 and python3
+> 2. for winpwn-deps: based on pwintools,but I complete the IO interactive and debug module
+> 3. for winpwn-no-deps: written by myself. It just use ctypes to invoke windows api. It support python2.7 and python3
 
 ## install
 > 1. if you want to debug, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
