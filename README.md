@@ -55,7 +55,7 @@
 
 
 
-### deps
+### configure
 > if you want to use debugger module, you need to deal with the deps yourself
 
 #### mingw-gdb
