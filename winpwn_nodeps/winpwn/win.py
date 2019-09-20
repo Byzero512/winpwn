@@ -104,8 +104,7 @@ class winPipe():
         def count():
             byteAvail=wintypes.DWORD()
             x=windll.kernel32.PeekNamedPipe(self.hReadPipe,0,0,0,byref(byteAvail),0)
-            if x==0:
-                raise(EOFError())
+
             return byteAvail.value
         if timeout is None:
             timeout=self.timeout
@@ -178,9 +177,7 @@ class winProcess(object):
         if not isinstance(argv,list):
             lpApplicationName = Latin1_encode(argv)
         else:
-            lpCommandLine = (" ".join([str(a) for a in argv]))
-            
-        # print(lpCommandLine.encode('ascii'),lpApplicationName)
+            lpCommandLine = Latin1_encode((" ".join([str(a) for a in argv])))
         try:    
             bs=windll.kernel32.CreateProcessA(
                 lpApplicationName,          

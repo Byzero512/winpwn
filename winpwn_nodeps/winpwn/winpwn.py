@@ -43,11 +43,11 @@ class tupe(object):
         if not local_call:
             print(parse.mark('recv'))
         buf=''
-        if var.ter is not None:
-            while(len(buf)!=n):
-                buf+=self.read(n-len(buf),timeout)
-        else:
-            buf=self.read(n, timeout)
+        # if var.ter is not None:
+        #     while(len(buf)!=n):
+        #         buf+=self.read(n-len(buf),timeout)
+        # else:
+        buf=self.read(n, timeout)
         if not local_call:
             if context.log_level=='debug':
                 print(parse.hexdump(buf))
@@ -63,11 +63,11 @@ class tupe(object):
         if not local_call:
             print(parse.mark('recv'))
         buf=''
-        if var.ter is not None:
-            while(len(buf)!=n):
-                buf += self.recv(n-len(buf), timeout,local_call=True)              
-        else:
-            buf = self.recv(n, timeout,local_call=True)
+        # if var.ter is not None:
+        #     while(len(buf)!=n):
+        #         buf += self.recv(n-len(buf), timeout,local_call=True)              
+        # else:
+        buf = self.recv(n, timeout,local_call=True)
         if len(buf) != n:
             raise(EOFError("Timeout when use recvn"))
         if not local_call :
@@ -128,7 +128,7 @@ class tupe(object):
             try:                  
                 while not go.is_set():
                     try:
-                        cur = self.read(0x10000,0.125)
+                        cur = self.read(0x10000,0.125,interactive=True)
                         if cur:
                             print(parse.mark('recv'))
                             if context.log_level=='debug': # and not interactive:
@@ -178,7 +178,7 @@ class remote(tupe):
             self.sock.settimeout(float(context.timeout))
         except:
             raise(EOFError("Connect failed"))
-    def read(self,n,timeout=None):
+    def read(self,n,timeout=None,interactive=False):
         save_timeout=self.timeout
         if timeout is not None:
             self.timeout=timeout
@@ -205,8 +205,14 @@ class process(tupe):
         def __init__(self,argv,pwd=None,flags=None):
             self.Process=winProcess(argv,pwd,flags)
             self.pid=self.Process.pid
-        def read(self,n,timeout=None):
-            return self.Process.read(n,timeout=timeout)
+        def read(self,n,timeout=None,interactive=False):
+            buf=''
+            if var.ter is not None and interactive is False:
+                while(len(buf)!=n):
+                    buf+=self.Process.read(n-len(buf),timeout)
+            else:
+                buf=self.Process.read(n, timeout)
+            return buf
         def write(self, buf):
             return self.Process.write(buf)
         def close(self):
