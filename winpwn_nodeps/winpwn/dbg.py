@@ -57,7 +57,7 @@ class gdb():
         script=pre+(script or '')
         tmp = tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
         if script:    # write script to a tmp file
-            tmp.write(misc.utf2Latin1(script))
+            tmp.write(misc.Latin1_encode(script))
             tmp.flush()
             load_Dbg+=' -ix {}'.format(tmp.name)
         # load_Dbg+=' -ex {}'.format('"shell rm {}"'.format(tmp.name))
@@ -85,7 +85,7 @@ class windbg():
         load_windbg+=['-c']             # exec command
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
         script+='\n!py -g winext\TWindbg\TWindbg.py\n'
-        tmp.write(misc.utf2Latin1(script))
+        tmp.write(misc.Latin1_encode(script))
         tmp.flush()
         tmp.close()
         load_windbg+=['$$><{}'.format(tmp.name)+';.shell -x del {}'.format(tmp.name)]

@@ -19,11 +19,12 @@ from ctypes.wintypes import HANDLE,LPVOID,LPSTR,DWORD,WORD,BOOL,BYTE
 from ctypes import POINTER,Structure
 
 from context import context
-from misc import utf2Latin1
+from misc import parse,Latin1_encode,Latin1_decode
 
 # some var to CreatePipe or CreateProcessA
 HANDLE_FLAG_INHERIT=1
 STARTF_USESTDHANDLES=256
+STILL_ACTIVE=259
 
 # for createPipe
 class SECURITY_ATTRIBUTES(Structure):
@@ -63,18 +64,18 @@ class STARTUPINFO(Structure):
         ('hStdError',HANDLE),
     ]
 
-# def utf2Latin1(string):
+# def Latin1_encode(string):
 #     if sys.version_info[0]==3:
 #         return bytes(string,'utf-8')
 #     return str(string)
 
 class winPipe():
     def __init__(self,bInheritHandle = 1):
-        self.timeout=0.1250
-        self.tick=0.0625
+        self.timeout=context.timeout
+        self.tick=context.tick
         self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe=self.create(bInheritHandle=bInheritHandle)
-        if context.timeout:
-            self.timeout=context.timeout
+        # if context.timeout:
+        #     self.timeout=context.timeout
 
     def create(self,bInheritHandle = 1):
         # set attr
@@ -97,41 +98,46 @@ class winPipe():
         if(rs1 and rs2 and rs3 and rs4):
             return (hReadPipe.value,hWritePipe.value,child_hReadPipe.value,child_hWritePipe.value)
         else:
-            print("create pipe error!")
-            quit()
+            raise(EOFError(parse.color("[-]: Create Pipe error",'red')))
 
     def read(self,n,timeout=None):
         def count():
             byteAvail=wintypes.DWORD()
-            windll.kernel32.PeekNamedPipe(self.hReadPipe,0,0,0,byref(byteAvail),0)
+            x=windll.kernel32.PeekNamedPipe(self.hReadPipe,0,0,0,byref(byteAvail),0)
+            if x==0:
+                raise(EOFError())
             return byteAvail.value
         if timeout is None:
             timeout=self.timeout
+        x_time=0
         if count()<n:
-            x_time=0
             while(x_time<timeout and count()<n):
                 time.sleep(float(self.tick))
                 x_time+=self.tick
         cn=min(count(),n)
         beenRead=wintypes.DWORD()
         buf=create_string_buffer(cn)
-        windll.kernel32.ReadFile(self.hReadPipe,buf,cn,byref(beenRead),None)
-        if sys.version_info[0]==3:
-            return str(buf.raw,'Latin1')
-        return str(buf.raw)
+        if cn>0:
+            windll.kernel32.ReadFile(self.hReadPipe,buf,cn,byref(beenRead),None)
+        # if sys.version_info[0]==3:
+        #     return str(buf.raw,'Latin1')
+        # return str(buf.raw)
+        return Latin1_decode(buf.raw)
 
-    def write(self,buf='',timeout=None):
+    def write(self,buf=''):
         length=len(buf)
         written=wintypes.DWORD()
-        windll.kernel32.WriteFile(self.hWritePipe,buf,length,byref(written),None);
+        x=windll.kernel32.WriteFile(self.hWritePipe,buf,length,byref(written),None)
+        if x==0:
+            raise(EOFError())
         return written.value
     
     def getHandle(self):
         return (self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe)
 
     def close(self):
-        windll.kernel32.CloseHandle(self.hReadPipe.HANDLE)
-        windll.kernel32.CloseHandle(self.hWritePipe.HANDLE)
+        windll.kernel32.CloseHandle(self.hReadPipe)
+        windll.kernel32.CloseHandle(self.hWritePipe)
 
     def debug(self):
         print("winPipe timeout: ",self.timeout)
@@ -170,7 +176,7 @@ class winProcess(object):
         lpApplicationName = None
 
         if not isinstance(argv,list):
-            lpApplicationName = utf2Latin1(argv)
+            lpApplicationName = Latin1_encode(argv)
         else:
             lpCommandLine = (" ".join([str(a) for a in argv]))
             
@@ -193,16 +199,25 @@ class winProcess(object):
             self.phandle=lpProcessInformation.hProcess
             print("process runing, pid: {}".format(hex(self.pid)))
         except:
-            print("create process error")
-            quit()
+            raise(EOFError(parse.color("[-]: Create process error",'red')))
 
     def read(self,n,timeout=None):
         return self.pipe.read(n,timeout=timeout)
-    def write(self,buf,timeout=None):
-        return self.pipe.write(utf2Latin1(buf),timeout=timeout)
+    def write(self,buf):
+        return self.pipe.write(Latin1_encode(buf))
+    def is_exit(self):
+        x=wintypes.DWORD()
+        n=windll.kernel32.GetExitCodeProcess(self.phandle,byref(x))
+        if n!=0 and x.value==STILL_ACTIVE:
+            return False
+        return True
     def close(self):           # need to kill process ..............
-        self.pipe.close()      
-        return
+        self.pipe.close()
+        windll.kernel32.TerminateProcess(self.phandle,1)
+    def readMem(self):
+        pass
+    def writeMem(self):
+        pass      
     def get_timeout(self):
         return self.pipe.timeout
     def set_timeout(self,timeout=None):

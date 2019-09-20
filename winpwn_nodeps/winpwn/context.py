@@ -4,6 +4,7 @@ class context():
     endian='little'
     log_level=""
     terminal=[]
-    timeout=None
+    timeout=1000
+    tick=0.0625
     length=None
     newline='\r\n'

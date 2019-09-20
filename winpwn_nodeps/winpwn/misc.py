@@ -23,10 +23,6 @@ def run_in_new_terminal(command, terminal = None, args = None):
         argv+=[command]          # [terminal,args,command]
     elif isinstance(command,(list,tuple)):
         argv+=list(command)
-    # argv+=['gdb.exe','-Reuse']
-    # print(argv)
-    # argv+=['-new_console']
-    # print(argv)
     ter=subprocess.Popen(argv)
     return ter
 
@@ -77,8 +73,19 @@ def u16(s):
 
 def utf2Latin1(string):
     if sys.version_info[0]==3:
+        # print(sys.getdefaultencoding())
         return bytes(string,sys.getdefaultencoding())
     return bytes(string)
+def Latin1_encode(string):
+    # deal input
+    if sys.version_info[0]==3:
+        # print(sys.getdefaultencoding())
+        return bytes(string,sys.getdefaultencoding())
+    return bytes(string)
+def Latin1_decode(string):
+    if sys.version_info[0]==3:
+        return str(string,'Latin1')
+    return str(string)
 
 class parse():
     @classmethod
@@ -96,7 +103,7 @@ class parse():
         return "\033[0;{}m{}\033[0m".format(c.get(color), content)
     
     @classmethod
-    def hexdump(clx,src,length=16,all=False):
+    def hexdump(clx,src,length=16,all=True):
         FILTER = ''.join([(len(repr(chr(x))) == 3) and chr(x) or '.' for x in range(256)])
         lines = []
         for c in range(0, len(src), length):
@@ -123,7 +130,7 @@ class parse():
         line="\n[+]: {}"
         if type=='recv':
             line=line.format('Recving')
-            return clx.color(line,'red')
+            return clx.color(line,'blue')
         elif type=='send':
             line=line.format('Sending')
             return clx.color(line,'cyan')
@@ -133,7 +140,7 @@ class parse():
         line="\n[-]: {}"
         if type=='recved':
             line=line.format('^Recved')
-            return clx.color(line,'red')            
+            return clx.color(line,'blue')            
         elif type=='sended':
             line=line.format('^Sended')
             return clx.color(line,'cyan')

@@ -3,10 +3,11 @@ import platform
 import threading
 import sys
 import socket
+import time
 
 from .win import winProcess
 from .context import context
-from .misc import parse
+from .misc import parse,Latin1_encode,Latin1_decode
 import var
 
 
@@ -19,11 +20,11 @@ class tupe(object):
 
     def read(self,n,timeout=None):
         pass
-    def write(self,buf,timeout=None):
+    def write(self,buf):
         pass
     
-    def send(self,buf,timeout=None):
-        rs=self.write(buf,timeout)
+    def send(self,buf):
+        rs=self.write(buf)
         print(parse.mark('send'))     
         if context.log_level=='debug':
             print(parse.hexdump(buf))
@@ -34,7 +35,7 @@ class tupe(object):
         print(parse.mark('sended'))
         return rs
     
-    def sendline(self,buf,timeout=None):
+    def sendline(self,buf):
         return self.send(buf+context.newline)
     
     def recv(self,n,timeout=None,local_call=False):
@@ -50,18 +51,17 @@ class tupe(object):
         if not local_call:
             if context.log_level=='debug':
                 print(parse.hexdump(buf))
+            if buf.endswith(context.newline):
+                sys.stdout.write(buf)
+            else:
+                print(buf)
             print(parse.mark('recved'))
         return buf
 
     def recvn(self,n,timeout=None,local_call=False):
-        # must recvn with in timeout
+        # must recv n bytes within timeout
         if not local_call:
             print(parse.mark('recv'))
-        if timeout is None:
-            if self.timeout:
-                timeout=self.timeout
-            elif context.timeout:
-                timeout=context.timeout
         buf=''
         if var.ter is not None:
             while(len(buf)!=n):
@@ -73,62 +73,94 @@ class tupe(object):
         if not local_call :
             if context.log_level=='debug':
                 print(parse.hexdump(buf))
+            if buf.endswith(context.newline):
+                sys.stdout.write(buf)
+            else:
+                print(buf)
             print(parse.mark('recved'))
         return buf
-  
+    
     def recvuntil(self,delim,timeout=None):
+        if timeout is None:
+            timeout=self.timeout
         print(parse.mark('recv'))
-        # self.timeout=1000
         buf = ''
-        # while delim not in buf:
+        st=time.time()
         while (len(buf)<len(delim) or buf[-len(delim):]!=delim):
-            buf += self.recvn(1, timeout,local_call=True)
-        if context.log_level=='debug':
-            print(parse.hexdump(buf))
-        print(parse.mark('recved'))
-        return buf
+            buf += self.recv(1, timeout=0.0625,local_call=True)
+            if var.ter is None:
+                xt=time.time()
+                if (xt-st)>=timeout:
+                    break
+        if buf.endswith(delim):
+            if context.log_level=='debug':
+                print(parse.hexdump(buf))
+            if buf.endswith(context.newline):
+                sys.stdout.write(buf)
+            else:
+                print(buf)
+            print(parse.mark('recved'))
+            return buf
+        else:
+            raise(EOFError(parse.color("[Error]: Recvuntil error",'red')))
 
     def recvline(self,timeout=None):
         return self.recvuntil(context.newline)
 
-    def recvall(self,n,timeout=None):
+    def recvall(self,timeout=None):
         print(parse.mark('recv'))
         buf=self.recv(0x100000, timeout,local_call=True)
         if context.log_level=='debug': # and not interactive:
             print(parse.hexdump(buf))
+        if buf.endswith(context.newline):
+            sys.stdout.write(buf)
+        else:
+            print(buf)
         print(parse.mark('recved'))
         return buf   
 
     # based on read/write
-    def interactive(self, escape = False):
+    def interactive(self):
         print(parse.mark('interact'))
         go = threading.Event()
         go.clear()
-        def recv_thread():                   
-            while not go.is_set():
-                cur = self.read(512)
-                if cur:
-                    sys.stdout.write(cur)
-                    sys.stdout.flush()
-                go.wait(0.2)
-
+        def recv_thread():
+            try:                  
+                while not go.is_set():
+                    try:
+                        cur = self.read(0x10000,0.125)
+                        if cur:
+                            print(parse.mark('recv'))
+                            if context.log_level=='debug': # and not interactive:
+                                print(parse.hexdump(cur))
+                            if cur.endswith(context.newline):                    
+                                sys.stdout.write(cur)
+                            else:
+                                print(cur)
+                            print(parse.mark('recved'))
+                        go.wait(0.2)
+                    except:
+                        print(parse.color('[pwn-EOF]: exited','red'))
+                        go.set()
+            except KeyboardInterrupt:
+                go.set()
         t = threading.Thread(target = recv_thread)
         t.daemon = True
         t.start()
 
         try:
-            while not go.is_set():               # write
-                # Impossible to timeout readline
-                # Wait a little and check obj
+            while not go.is_set():
                 go.wait(0.2)
                 try:
+                    if self.is_exit():
+                        time.sleep(0.2)
+                        print(parse.color('[pwn-EOF]: exited','red')) 
                     buf = sys.stdin.readline()
                     if buf:
                         self.write(buf)
-                    else:
-                        go.set()
-                except EOFError:
+                except:
                     go.set()
+                    print(parse.color('[pwn-EOF]: exited','red'))
         except KeyboardInterrupt:
             go.set()
         while t.is_alive():
@@ -139,28 +171,35 @@ class remote(tupe):
         self.sock = socket.socket(family, type)
         self.ip = ip
         self.port = port
-        self.__timeout=0.0625
+        self._timeout=context.timeout
+        self._is_exit=False
         try:
             self.sock.connect((ip, port))
-            self.sock.settimeout(float(0.0625))
+            self.sock.settimeout(float(context.timeout))
         except:
-            print("connect failed")
-            quit()
+            raise(EOFError("Connect failed"))
     def read(self,n,timeout=None):
-        return self.sock.recv(n)
-    def write(self,buf,timeout=None):
-        return self.sock.write(buf)
+        save_timeout=self.timeout
+        if timeout is not None:
+            self.timeout=timeout
+        buf=Latin1_decode(self.sock.recv(n))
+        self.timeout=save_timeout
+        return buf
+    def write(self,buf):
+        return self.sock.send(Latin1_encode(buf))
     def close(self):
         self.sock.close()
+        self._is_exit=True
+    def is_exit(self):
+        if self._is_exit:
+            return True
+        return False
     def get_timeout(self):
-        return self.__timeout
+        return self._timeout
     def set_timeout(self,timeout=None):
         self.sock.settimeout(float(timeout))
-        self.__timeout=timeout
+        self._timeout=timeout
     timeout=property(get_timeout,set_timeout)
-
-    def debug(self):
-        print("winProcess timeout: ",self.timeout)
 
 class process(tupe):
         def __init__(self,argv,pwd=None,flags=None):
@@ -168,15 +207,15 @@ class process(tupe):
             self.pid=self.Process.pid
         def read(self,n,timeout=None):
             return self.Process.read(n,timeout=timeout)
-        def write(self, buf, timeout=None):
-            return self.Process.write(buf,timeout=timeout)
+        def write(self, buf):
+            return self.Process.write(buf)
         def close(self):
             self.Process.close()        # need to kill process
+        def is_exit(self):
+            return self.Process.is_exit()
         def get_timeout(self):
             return self.Process.timeout
         def set_timeout(self,timeout=None):
             if timeout is not None:
                 self.Process.timeout=timeout
         timeout=property(get_timeout,set_timeout)
-        def debug(self):
-            print("winpwn process timeout: ",self.timeout)
