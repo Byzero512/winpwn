@@ -10,5 +10,17 @@
             "gdb": "F:\\ctfTools\\windows-gdb\\mingw-w64-64\\mingw64\\bin\\gdb64.exe", 
             "windbg": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64\\windbg.exe"
         }
+    },
+    "debugger_init": {
+        "i386": {
+            "x64dbg": "", 
+            "gdb": "", 
+            "windbg": ".load pykd;!py -g winext\\TWindbg\\TWindbg.py;"
+        }, 
+        "amd64": {
+            "x64dbg": "", 
+            "gdb": "b *0\n", 
+            "windbg": ".load pykd;!py -g winext\\TWindbg\\TWindbg.py;"
+        }
     }
 }
