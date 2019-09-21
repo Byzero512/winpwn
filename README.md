@@ -14,7 +14,7 @@ for CTF windows pwn
 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
 
-### winpwn-deps(this veresion have a few bug, and I will not update it)
+### winpwn-deps(this veresion have a few bug, and I will not update thhis version)
 1. git clone  https://github.com/Byzero512/winpwn.git
 1. cd winpwn
 1. pip install pythonforwindows
