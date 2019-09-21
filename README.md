@@ -8,8 +8,8 @@
 
 ## install
 > 1. if you want to debug, 
-+ modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
-+ or if you use winpwn-nodeps, just create a json file in home dir, named ".winpwn". Its content format refers winpwn-nodeps/.winpwn
++ if you install by srccode, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
++ or if you use winpwn-nodeps, you can also create a json file in home dir, named ".winpwn". Its content format refers winpwn-nodeps/.winpwn
 > 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
 
