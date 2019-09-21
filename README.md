@@ -9,7 +9,7 @@ for CTF windows pwn
 
 ## install
 1. if you want to debug, 
-+ if you install by srccode, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
++ if you install by , modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
 + or if you use winpwn-nodeps, you can also create a json file in home dir(named ".winpwn"). Its content format refers winpwn-nodeps/.winpwn
 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
@@ -57,7 +57,7 @@ for CTF windows pwn
 
    1. gdb\.attach\(p, script="b \*0x401000"\)
 
-   1. windbg\.attach\(p,script="bp 0x123456")
+   1. windbg\.attach\(p,script="bp 0x123456"\)
 
    1. x64dbg\.attach\(p\): can not parse script file yet
 
