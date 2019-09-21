@@ -53,13 +53,12 @@ class gdb():
                 Info+='set sysroot {}\n'.format(sysroot)
             return Info
 
-        pre=setInfo(sysroot)
+        pre = setInfo(sysroot)+'\n'+var.debugger_init[context.arch]['gdb']
         script=pre+(script or '')
         tmp = tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        if script:    # write script to a tmp file
-            tmp.write(misc.Latin1_encode(script))
-            tmp.flush()
-            load_Dbg+=' -ix {}'.format(tmp.name)
+        tmp.write(misc.Latin1_encode(script))
+        tmp.flush()
+        load_Dbg+=' -ix {}'.format(tmp.name)
         # load_Dbg+=' -ex {}'.format('"shell rm {}"'.format(tmp.name))
         load_Dbg+=' -ex {}'.format('"shell del {}"'.format(tmp.name))
         tmp.close()
@@ -82,19 +81,18 @@ class windbg():
         elif isinstance(target,int):
             load_windbg.append(str(pid))
         # load_windbg+=['-a','pykd']  # laad ext
-        load_windbg+=['-c']             # exec command
-        tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
         # script+='\n!py -g winext\TWindbg\TWindbg.py\n'
+        script=var.debugger_init[context.arch]['windbg']+'\n'+script
+        tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
         tmp.write(misc.Latin1_encode(script))
         tmp.flush()
         tmp.close()
+        load_windbg += ['-c']             # exec command
         load_windbg+=['$$><{}'.format(tmp.name)+';.shell -x del {}'.format(tmp.name)]
         # print('script:',script)
         # print('load:',load_windbg)
         ter=subprocess.Popen(load_windbg)
         while(os.path.exists(tmp.name)):    # wait_for_debugger
-            # misc.waiting_for_debugger()
-            # print('waiting')
             pass
         var.ter=ter
         return var.ter.pid
