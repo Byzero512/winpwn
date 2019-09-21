@@ -21,10 +21,12 @@ for CTF windows pwn
 1. python setup.py install
 
 ### winpwn-nodeps
+
 #### install from source code
 1. git clone  https://github.com/Byzero512/winpwn.git
 2. cd winpwn\winpwn-nodeps
 3. python setup.py install / python3 setup.py install
+
 #### pip
 1. pip install winpwn 
 2. or pip3 install winpwn
