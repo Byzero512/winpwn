@@ -71,11 +71,6 @@ def u16(s):
     """
     return struct.unpack('<H', s)[0]
 
-def utf2Latin1(string):
-    if sys.version_info[0]==3:
-        # print(sys.getdefaultencoding())
-        return bytes(string,sys.getdefaultencoding())
-    return bytes(string)
 def Latin1_encode(string):
     # deal input
     if sys.version_info[0]==3:
@@ -85,7 +80,7 @@ def Latin1_encode(string):
 def Latin1_decode(string):
     if sys.version_info[0]==3:
         return str(string,'Latin1')
-    return str(string)
+    return string.decode('Latin1')
 
 class parse():
     @classmethod
