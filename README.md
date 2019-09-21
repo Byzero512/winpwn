@@ -1,4 +1,4 @@
-## winpwn: mini pwntools on windows
+## winpwn: mini pwntools for Windows
 for CTF windows pwn
 
 ### pre
