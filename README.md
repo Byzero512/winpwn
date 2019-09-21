@@ -48,7 +48,7 @@ for CTF windows pwn
 
    1. context\.endian="little"
 
-   1. context\.log\_level=None
+   1. context\.log\_level=""
 
    1. context\.terminal=\[ ]
 
