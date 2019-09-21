@@ -13,13 +13,6 @@ for CTF windows pwn
 + or if you use <b>winpwn-nodeps</b>, you can also create a json file in HOME dir(named "<b>.winpwn</b>"). Its content format refers winpwn-nodeps/.winpwn
 2. <b>I just test winpwn on cmder</b>(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
-
-### winpwn-deps(this veresion have a few bug, and I will not update thhis version)
-1. git clone  https://github.com/Byzero512/winpwn.git
-1. cd winpwn
-1. pip install pythonforwindows
-1. python setup.py install
-
 ### winpwn-nodeps
 
 #### install from source code
@@ -30,6 +23,12 @@ for CTF windows pwn
 #### pip
 + <b>pip install winpwn </b>
 + <b>or pip3 install winpwn</b>
+
+### winpwn-deps(this veresion have a few bug, and I will not update thhis version)
+1. git clone  https://github.com/Byzero512/winpwn.git
+1. cd winpwn
+1. pip install pythonforwindows
+1. python setup.py install
 
 
 ### usage
