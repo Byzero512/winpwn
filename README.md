@@ -25,7 +25,7 @@
 2. cd winpwn\winpwn-nodeps
 3. python setup.py install / python3 setup.py install
 #### pip
-1. pip install winwpn 
+1. pip install winpwn 
 2. or pip3 install winpwn
 
 
