@@ -1,4 +1,5 @@
 ## winpwn: mini pwntools on windows
+for CTF windows pwn
 
 ### pre
 1. there are two versions of winpwn: winpwn-deps and winpwn-no-deps
