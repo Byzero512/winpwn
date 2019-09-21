@@ -111,7 +111,7 @@ class x64dbg():
             load_x64dbg.append(str(pid))
         ter=subprocess.Popen(load_x64dbg)
         var.ter=ter
-        misc.wait_for_debugger()
+        raw_input(misc.parse.color("[=]: pausing\n\twaiting for debugger",'purple'))
         return var.ter.pid                
 
     @classmethod

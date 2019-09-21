@@ -26,8 +26,8 @@ def run_in_new_terminal(command, terminal = None, args = None):
     ter=subprocess.Popen(argv)
     return ter
 
-def waiting_for_debugger():
-    raw_input(parse.color("[=]: pausing\n\twaiting for debugger",'purple'))
+# def waiting_for_debugger():
+#     raw_input(parse.color("[=]: pausing\n\twaiting for debugger",'purple'))
 
 def pause():
     raw_input(parse.color("[=]: pausing",'purple'))
@@ -70,6 +70,18 @@ def u16(s):
     Unpack 16 bits integer from a little endian str representation
     """
     return struct.unpack('<H', s)[0]
+
+def p8(i):
+    """p16(i) -> str
+    Pack 16 bits integer (little endian)
+    """
+    return struct.pack('<B', i)
+
+def u8(s):
+    """u16(s) -> int
+    Unpack 16 bits integer from a little endian str representation
+    """
+    return struct.unpack('<B', s)[0]
 
 def Latin1_encode(string):
     # deal input
