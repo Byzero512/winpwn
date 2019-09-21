@@ -42,17 +42,17 @@ for CTF windows pwn
    1. remote\("127.0.0.1", 65535\)
 1. context
 
-   1. context\.timeout=None
+   1. context\.timeout=1000
 
    1. context\.debugger="gdb"
 
    1. context\.endian="little"
 
-   1. context\.log\_level="\r\n"
+   1. context\.log\_level=None
 
    1. context\.terminal=\[ ]
 
-   1. context\.newline=None \(because newline may be "\\n" or "\\r\\n", default is "\\r\\n", you can set it with this attr\)
+   1. context\.newline="\r\n" 
 1. dbg: gdb\(mingw gdb\), windbg, x64dbg
 
    1. gdb\.attach\(p, script="b \*0x401000"\)
