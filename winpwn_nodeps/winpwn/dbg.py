@@ -81,10 +81,10 @@ class windbg():
             load_windbg.append(str(target.pid))
         elif isinstance(target,int):
             load_windbg.append(str(pid))
-        load_windbg+=['-a','pykd']  # laad ext
+        # load_windbg+=['-a','pykd']  # laad ext
         load_windbg+=['-c']             # exec command
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        script+='\n!py -g winext\TWindbg\TWindbg.py\n'
+        # script+='\n!py -g winext\TWindbg\TWindbg.py\n'
         tmp.write(misc.Latin1_encode(script))
         tmp.flush()
         tmp.close()
