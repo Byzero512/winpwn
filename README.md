@@ -1,16 +1,16 @@
 ## winpwn: mini pwntools on windows
 
 ### pre
-> 1. there are two versions of winpwn: winpwn-deps and winpwn-no-deps
-> 2. for winpwn-deps: based on pwintools,but I complete the IO interactive and debug module
-> 3. for winpwn-no-deps: written by myself. It just use ctypes to invoke Windows API. It supports python2.7 and python3
+1. there are two versions of winpwn: winpwn-deps and winpwn-no-deps
+2. for winpwn-deps: based on pwintools,but I complete the IO interactive and debug module
+3. for winpwn-no-deps: written by myself. It just use ctypes to invoke Windows API. It supports python2.7 and python3
 
 
 ## install
-> 1. if you want to debug, 
+1. if you want to debug, 
 + if you install by srccode, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
 + or if you use winpwn-nodeps, you can also create a json file in home dir, named ".winpwn". Its content format refers winpwn-nodeps/.winpwn
-> 2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
+2. I just test winpwn on cmder(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
 
 ### winpwn-deps(this veresion have a few bug, and I will not update it)
@@ -59,11 +59,11 @@
 
 
 ### configure
-> if you want to use debugger module, you need to deal with the deps yourself
+if you want to use debugger module, you need to deal with the deps yourself
 
 #### mingw-gdb
 for gdb-peda like show  as bellow, you need:
-> mingw-gdb installer: https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/gdb/
+mingw-gdb installer: https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/gdb/
 
 1. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
 2. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" in wibe)
