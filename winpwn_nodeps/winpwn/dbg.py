@@ -34,6 +34,7 @@ class gdb():
         """
             use context.arch or gdbType to decide mingw-gdb64 or mingw-gdb to be used
         """
+        print(misc.parse.mark('attach'))
         # gdbType=gdbType        # mingw-gdb or windbg, mingw-gdb in default
         gdbType=var.debugger[context.arch]['gdb']
         load_Dbg=None        # how to attach to process and init debugger
@@ -53,20 +54,28 @@ class gdb():
                 Info+='set sysroot {}\n'.format(sysroot)
             return Info
 
-        pre = setInfo(sysroot)+'\n'+var.debugger_init[context.arch]['gdb']
-        script=pre+(script or '')
-        tmp = tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        tmp.write(misc.Latin1_encode(script))
-        tmp.flush()
-        load_Dbg+=' -ix {}'.format(tmp.name)
-        # load_Dbg+=' -ex {}'.format('"shell rm {}"'.format(tmp.name))
-        load_Dbg+=' -ex {}'.format('"shell del {}"'.format(tmp.name))
-        tmp.close()
+        pre = setInfo(sysroot)+var.debugger_init[context.arch]['gdb']
+        pre_tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
+        pre_tmp.write(misc.Latin1_encode(pre))
+        pre_tmp.flush()
+        pre_tmp.close()
+
+        script=(script or '')
+        script_tmp = tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
+        script_tmp.write(misc.Latin1_encode(script))
+        script_tmp.flush()
+        script_tmp.close()
+
+        load_Dbg+=' -ix "{}"'.format(pre_tmp.name)
+        load_Dbg+=' -ex source -command {}'.format(script_tmp.name)
+        load_Dbg+=' -ex {}'.format('"shell del {}"'.format(script_tmp.name))
+        load_Dbg+=' -ex {}'.format('"shell del {}"'.format(pre_tmp.name))
         cmd=[load_Dbg]
         ter=misc.run_in_new_terminal(cmd)
-        while(os.path.exists(tmp.name)):    # wait_for_debugger
+        while(os.path.exists(pre_tmp.name)):    # wait_for_debugger
             pass
         var.ter=ter
+        print(misc.parse.mark('attached'))
         return var.ter.pid
     @classmethod
     def debug():
@@ -75,6 +84,7 @@ class gdb():
 class windbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
+        print(misc.parse.mark('attach'))
         load_windbg=[var.debugger[context.arch]['windbg'],'-p']
         if isinstance(target,process):
             load_windbg.append(str(target.pid))
@@ -95,6 +105,7 @@ class windbg():
         while(os.path.exists(tmp.name)):    # wait_for_debugger
             pass
         var.ter=ter
+        print(misc.parse.mark('attached'))
         return var.ter.pid
 
     @classmethod

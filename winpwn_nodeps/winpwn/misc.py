@@ -141,6 +141,9 @@ class parse():
         elif type=='send':
             line=line.format('Sending')
             return clx.color(line,'cyan')
+        elif type=='attach':
+            line=line.format('attaching')
+            return clx.color(line,'green')
         elif type=='interact':
             line=line.format('Interacting')
             return clx.color(line,'green')
@@ -151,3 +154,6 @@ class parse():
         elif type=='sended':
             line=line.format('^Sended')
             return clx.color(line,'cyan')
+        elif type=='attached':
+            line=line.format('^attached')
+            return clx.color(line,'green')

@@ -5,12 +5,14 @@ is_debug=1
 if is_debug:
     if context.arch=='amd64':
         p=process(['./dotest64.exe','aaaaaaaaaaaaa'])
-        windbg.attach(p,'.echo 0000')
+        # windbg.attach(p,'.echo 0000')
+        # x64dbg.attach(p)
         # gdb.attach(p) 
     else:
         p=process('./dotest.exe')
-        # windbg.attach(p,'.echo 0000')
-        gdb.attach(p)
+        windbg.attach(p,'.echo 0000')
+        # gdb.attach(p,'nb 0')
+        # x64dbg.attach(p)
 else:
     if context.arch=='amd64':
         p=process('./dotest64.exe')

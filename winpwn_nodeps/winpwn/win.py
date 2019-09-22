@@ -104,7 +104,6 @@ class winPipe():
         def count():
             byteAvail=wintypes.DWORD()
             x=windll.kernel32.PeekNamedPipe(self.hReadPipe,0,0,0,byref(byteAvail),0)
-
             return byteAvail.value
         if timeout is None:
             timeout=self.timeout

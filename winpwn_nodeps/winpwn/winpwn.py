@@ -11,7 +11,7 @@ from .misc import parse,Latin1_encode,Latin1_decode
 import var
 
 
-class tupe(object):
+class tube(object):
     def get_timeout(self):
         pass
     def set_timeout(self,timeout=None):
@@ -63,10 +63,6 @@ class tupe(object):
         if not local_call:
             print(parse.mark('recv'))
         buf=''
-        # if var.ter is not None:
-        #     while(len(buf)!=n):
-        #         buf += self.recv(n-len(buf), timeout,local_call=True)              
-        # else:
         buf = self.recv(n, timeout,local_call=True)
         if len(buf) != n:
             raise(EOFError("Timeout when use recvn"))
@@ -86,8 +82,9 @@ class tupe(object):
         print(parse.mark('recv'))
         buf = ''
         st=time.time()
+        xt=0.0
         while (len(buf)<len(delim) or buf[-len(delim):]!=delim):
-            buf += self.recv(1, timeout=0.0625,local_call=True)
+            buf += self.recv(1, timeout=timeout-(xt-st),local_call=True)
             if var.ter is None:
                 xt=time.time()
                 if (xt-st)>=timeout:
@@ -104,8 +101,10 @@ class tupe(object):
         else:
             raise(EOFError(parse.color("[Error]: Recvuntil error",'red')))
 
-    def recvline(self,timeout=None):
-        return self.recvuntil(context.newline)
+    def recvline(self,timeout=None,newline=None):
+        if newline is None:
+            newline=context.newline
+        return self.recvuntil(newline)
 
     def recvall(self,timeout=None):
         print(parse.mark('recv'))
@@ -121,6 +120,7 @@ class tupe(object):
 
     # based on read/write
     def interactive(self):
+        # it exited, contrl+C, timeout
         print(parse.mark('interact'))
         go = threading.Event()
         go.clear()
@@ -128,22 +128,23 @@ class tupe(object):
             try:                  
                 while not go.is_set():
                     try:
-                        cur = self.read(0x10000,0.125,interactive=True)
-                        if cur:
+                        buf = self.read(0x10000,0.125,interactive=True)
+                        if buf:
                             print(parse.mark('recv'))
                             if context.log_level=='debug': # and not interactive:
-                                print(parse.hexdump(cur))
-                            if cur.endswith(context.newline):                    
-                                sys.stdout.write(cur)
+                                print(parse.hexdump(buf))
+                            if buf.endswith(context.newline):                    
+                                sys.stdout.write(buf)
                             else:
-                                print(cur)
+                                print(buf)
                             print(parse.mark('recved'))
                         go.wait(0.2)
-                    except:
+                    except:      # does this handle have use?????
                         print(parse.color('[pwn-EOF]: exited','red'))
                         go.set()
             except KeyboardInterrupt:
                 go.set()
+                print(parse.color('[pwn-EOF]: exited','red'))
         t = threading.Thread(target = recv_thread)
         t.daemon = True
         t.start()
@@ -153,20 +154,21 @@ class tupe(object):
                 go.wait(0.2)
                 try:
                     if self.is_exit():
-                        time.sleep(0.2)
+                        time.sleep(0.2) # wait for time to read output
                         print(parse.color('[pwn-EOF]: exited','red')) 
                     buf = sys.stdin.readline()
                     if buf:
                         self.write(buf)
-                except:
+                except:     # exited
                     go.set()
                     print(parse.color('[pwn-EOF]: exited','red'))
-        except KeyboardInterrupt:
+        except KeyboardInterrupt: # control+C
             go.set()
+            print(parse.color('[pwn-EOF]: exited','red'))
         while t.is_alive():
             t.join(timeout = 0.1)
 
-class remote(tupe):
+class remote(tube):
     def __init__(self, ip, port, family = socket.AF_INET, type = socket.SOCK_STREAM):
         self.sock = socket.socket(family, type)
         self.ip = ip
@@ -182,7 +184,14 @@ class remote(tupe):
         save_timeout=self.timeout
         if timeout is not None:
             self.timeout=timeout
-        buf=Latin1_decode(self.sock.recv(n))
+        buf=''
+        if interactive is False:
+            buf=Latin1_decode(self.sock.recv(n))
+        else:
+            try:                           # for interactive read
+                buf=Latin1_decode(self.sock.recv(n))
+            except socket.timeout:
+                return buf
         self.timeout=save_timeout
         return buf
     def write(self,buf):
@@ -201,7 +210,7 @@ class remote(tupe):
         self._timeout=timeout
     timeout=property(get_timeout,set_timeout)
 
-class process(tupe):
+class process(tube):
         def __init__(self,argv,pwd=None,flags=None):
             self.Process=winProcess(argv,pwd,flags)
             self.pid=self.Process.pid
