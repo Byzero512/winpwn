@@ -26,7 +26,7 @@ for CTF windows pwn
 
 
 ### usage
-
+```python
 1. process
 
    1. process\("./pwn"\)
@@ -54,7 +54,7 @@ for CTF windows pwn
 
    1. x64dbg\.attach\(p\): can not parse script file yet
 
-
+```
 
 ### configure
 if you want to use debugger module, you need to deal with the deps yourself
