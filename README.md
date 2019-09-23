@@ -24,12 +24,6 @@ for CTF windows pwn
 + <b>pip install winpwn </b>
 + <b>or pip3 install winpwn</b>
 
-### winpwn-deps(this veresion have a few bug, and I will not update thhis version)
-1. git clone  https://github.com/Byzero512/winpwn.git
-1. cd winpwn
-1. pip install pythonforwindows
-1. python setup.py install
-
 
 ### usage
 
@@ -76,10 +70,6 @@ mingw-gdb installer: https://sourceforge.net/projects/mingw-w64/files/External%2
 1. pykd
 2. TWindbg: https://github.com/bruce30262/TWindbg
 
-
-### demands
-1. shellcode(I delete these funcitons exisit in pwintools, because I do not want to import too many deps)
-2. complete debugger module for x64dbg (I have no good idea to wait for debugger to let it have enough time to execute the command when attach to it, and I am not familiar with x64dbg) 
 
 ## photos
 
