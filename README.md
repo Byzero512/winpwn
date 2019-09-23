@@ -24,8 +24,8 @@ for CTF windows pwn
 3. python setup.py install / python3 setup.py install
 
 #### pip
-+ <b>pip install winpwn </b>
-+ <b>or pip3 install winpwn</b>
+   + <b>pip install winpwn </b>
+   + <b>or pip3 install winpwn</b>
 
 
 ### usage
