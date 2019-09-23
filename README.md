@@ -51,7 +51,7 @@ for CTF windows pwn
 ```
 
 ### configure
-if you want to use debugger module, you need to deal with the deps yourself
+if you want to use debugger like gdb-peda, you need to deal with the deps yourself
 
 #### mingw-gdb
 for gdb-peda like show  as bellow, you need:
