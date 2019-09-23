@@ -28,30 +28,22 @@ for CTF windows pwn
 ### usage
 ```python
 1. process
-
    1. process("./pwn")
+   
 1. remote
-
    1. remote("127.0.0.1", 65535)
+   
 1. context
-
    1. context.timeout=1000
-
    1. context.debugger="gdb"
-
    1. context.endian="little"
-
    1. context.log_level=""
-
    1. context.terminal=[ ]
-
-   1. context.newline="\r\n" 
+   1. context.newline="\r\n"
+   
 1. dbg: gdb(mingw gdb), windbg, x64dbg
-
    1. gdb.attach(p, script="b *0x401000")
-
    1. windbg.attach(p,script="bp 0x123456")
-
    1. x64dbg.attach(p): can not parse script file yet
 
 ```
