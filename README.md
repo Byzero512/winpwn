@@ -40,9 +40,9 @@ for CTF windows pwn
    
 3. context
    + context.timeout=512
-   + context.debugger="gdb"
+   + context.debugger="gdb" # or "windbg" or "x64dbg"
    + context.endian="little"
-   + context.log_level=""
+   + context.log_level="" # or "debug"
    + context.terminal=[ ]
    + context.newline="\r\n"
    
