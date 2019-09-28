@@ -6,17 +6,17 @@ for CTF windows pwn
 2. for winpwn-deps: 
    + based on pwintools,but I complete the IO interactive and debug module
    + have bug, and I will not update it anymore, so I suggest you use winpwn-nodeps
-   + not support python3
+   + not support python3 and just can install from source code
 3. for winpwn-nodeps: written by myself. 
    + just use ctypes to invoke Windows API. 
    + It supports python2.7 and python3
-   + can <b>use pip to install winpwn-nodeps</b>
+   + <b>can use pip to install winpwn-nodeps</b>
 
 
 ## install
-1. if you want to debug, 
+1. for debug
    + if you install by source code, modify the PATH of debugger in <b>winpwn/var.py</b>
-   + or if you use <b>winpwn-nodeps</b>, you can also create a json file in HOME dir(named "<b>.winpwn</b>"). Its content format refers winpwn-nodeps/.winpwn
+   + or if you use winpwn-nodeps, touch a json file in HOMEDIR(named "<b>.winpwn</b>") whose content format refers winpwn-nodeps/.winpwn
 2. <b>I just test winpwn on cmder</b>(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
 ### winpwn-nodeps
