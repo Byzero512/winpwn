@@ -12,7 +12,7 @@ for CTF windows pwn
 
 ## install
 1. if you want to debug, 
-   + if you install by source code, modify the path of modify the PATH of debugger in <b>winpwn/var.py</b>
+   + if you install by source code, modify the PATH of debugger in <b>winpwn/var.py</b>
    + or if you use <b>winpwn-nodeps</b>, you can also create a json file in HOME dir(named "<b>.winpwn</b>"). Its content format refers winpwn-nodeps/.winpwn
 2. <b>I just test winpwn on cmder</b>(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
 
