@@ -9,7 +9,7 @@ for CTF windows pwn
    + not support python3 and just can install from source code
 3. for winpwn-nodeps: written by myself. 
    + just use ctypes to invoke Windows API. 
-   + It supports python2.7 and python3
+   + support python2.7 and python3
    + <b>can use pip to install winpwn-nodeps</b>
 
 
@@ -78,4 +78,4 @@ for gdb-peda like show  as bellow, you need:
 ![windbg](./img/winpwn2.png)
 
 ### x64dbg
-not support {x64dbg.attach(p,"b*??")} yet
+> because lacks some commandline options, so just can use x64dbg attach to process and can not convert init script yet
