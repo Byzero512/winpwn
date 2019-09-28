@@ -35,8 +35,10 @@ class tube(object):
         print(parse.mark('sended'))
         return rs
     
-    def sendline(self,buf):
-        return self.send(buf+context.newline)
+    def sendline(self,buf,newline=None):
+        if newline is None:
+            newline=context.newline
+        return self.send(buf+newline)
     
     def recv(self,n,timeout=None,local_call=False):
         # try to read n bytes, no exception
