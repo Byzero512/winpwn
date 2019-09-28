@@ -7,7 +7,7 @@ for CTF windows pwn
 3. for winpwn-nodeps: written by myself. 
    + just use ctypes to invoke Windows API. 
    + It supports python2.7 and python3
-   + can<b>use pip to install winpwn-nodeps</b>(pip install winpwn)
+   + can <b>use pip to install winpwn-nodeps</b>
 
 
 ## install
