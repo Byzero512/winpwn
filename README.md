@@ -39,7 +39,7 @@ for CTF windows pwn
    + remote("127.0.0.1", 65535)
    
 3. context
-   + context.timeout=1000
+   + context.timeout=512
    + context.debugger="gdb"
    + context.endian="little"
    + context.log_level=""
