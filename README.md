@@ -18,15 +18,14 @@ for CTF windows pwn
 
 ### winpwn-nodeps
 
+#### install with pip
+   + <b>pip install winpwn </b>
+   + <b>or pip3 install winpwn</b>
+
 #### install from source code
 1. git clone  https://github.com/Byzero512/winpwn.git
 2. cd winpwn\winpwn-nodeps
 3. python setup.py install / python3 setup.py install
-
-#### pip
-   + <b>pip install winpwn </b>
-   + <b>or pip3 install winpwn</b>
-
 
 ### usage
 ```python
@@ -55,10 +54,10 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 #### mingw-gdb
 for gdb-peda like show  as bellow, you need:
-mingw-gdb installer: https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/gdb/
-
-1. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
-2. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" in wibe)
+1. mingw-gdb installer: 
++ https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/gdb/
+2. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
+3. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" in wibe)
 
 #### windbg
 1. pykd
