@@ -78,4 +78,4 @@ for gdb-peda like show  as bellow, you need:
 ![windbg](./img/winpwn2.png)
 
 ### x64dbg
-> because lacks some commandline options, so just can use x64dbg attach to process and can not convert init script yet
+> because lacks some commandline options, so just can use x64dbg attach to process and can not deliver init script yet
