@@ -1,3 +1,4 @@
+# -*- coding=Latin1 -*-
 # import os
 import subprocess
 import struct
@@ -39,8 +40,10 @@ def p64(i):
     """p64(i) -> str
     Pack 64 bits integer (little endian)
     """
-    return struct.pack('<Q', i)
-
+    l=struct.pack('<Q', i)
+    if sys.version_info[0]==3:
+        return Latin1_decode(l)
+    return l
 def u64(s):
     """u64(s) -> int
     Unpack 64 bits integer from a little endian str representation
@@ -51,7 +54,10 @@ def p32(i):
     """p32(i) -> str
     Pack 32 bits integer (little endian)
     """
-    return struct.pack('<I', i)
+    l=struct.pack('<I', i)
+    if sys.version_info[0]==3:
+        return Latin1_decode(l)
+    return l
 
 def u32(s):
     """u32(s) -> int
@@ -63,7 +69,11 @@ def p16(i):
     """p16(i) -> str
     Pack 16 bits integer (little endian)
     """
-    return struct.pack('<H', i)
+    l=struct.pack('<H', i)
+    if sys.version_info[0]==3:
+        return Latin1_decode(l)
+    return l
+
 
 def u16(s):
     """u16(s) -> int
@@ -75,13 +85,17 @@ def p8(i):
     """p16(i) -> str
     Pack 16 bits integer (little endian)
     """
-    return struct.pack('<B', i)
+    l=struct.pack('<B', i)
+    if sys.version_info[0]==3:
+        return Latin1_decode(l)
+    return l
 
 def u8(s):
     """u16(s) -> int
     Unpack 16 bits integer from a little endian str representation
     """
     return struct.unpack('<B', s)[0]
+
 
 def Latin1_encode(string):
     # deal input
@@ -92,7 +106,10 @@ def Latin1_encode(string):
 def Latin1_decode(string):
     if sys.version_info[0]==3:
         return str(string,'Latin1')
-    return string.decode('Latin1')
+    return string #.decode('Latin1')
+
+# def Latin1_print(buf):
+
 
 class parse():
     @classmethod

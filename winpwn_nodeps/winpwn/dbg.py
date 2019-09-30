@@ -1,3 +1,4 @@
+# -*- coding=Latin1 -*-
 import tempfile
 import os
 import subprocess

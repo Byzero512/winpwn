@@ -1,3 +1,4 @@
+# -*- coding=Latin1 -*-
 # ctypes:
 #   create_string_buffer
 #   create_unicode_buffer
@@ -64,11 +65,6 @@ class STARTUPINFO(Structure):
         ('hStdError',HANDLE),
     ]
 
-# def Latin1_encode(string):
-#     if sys.version_info[0]==3:
-#         return bytes(string,'utf-8')
-#     return str(string)
-
 class winPipe():
     def __init__(self,bInheritHandle = 1):
         self.timeout=context.timeout
@@ -117,9 +113,7 @@ class winPipe():
         buf=create_string_buffer(cn)
         if cn>0:
             windll.kernel32.ReadFile(self.hReadPipe,buf,cn,byref(beenRead),None)
-        # if sys.version_info[0]==3:
-        #     return str(buf.raw,'Latin1')
-        # return str(buf.raw)
+        # return str
         return Latin1_decode(buf.raw)
 
     def write(self,buf=''):

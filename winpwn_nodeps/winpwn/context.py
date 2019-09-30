@@ -1,3 +1,4 @@
+# -*- coding=Latin1 -*-
 class context():
     debugger='gdb'
     arch='i386'

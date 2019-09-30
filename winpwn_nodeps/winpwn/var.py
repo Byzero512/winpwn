@@ -1,3 +1,4 @@
+# -*- coding=Latin1 -*-
 import os
 import json
 

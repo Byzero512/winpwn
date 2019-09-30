@@ -1,3 +1,4 @@
+# -*- coding=Latin1 -*-
 import platform
 
 import threading
@@ -9,7 +10,6 @@ from .win import winProcess
 from .context import context
 from .misc import parse,Latin1_encode,Latin1_decode
 import var
-
 
 class tube(object):
     def get_timeout(self):
