@@ -1,26 +1,25 @@
 from winpwn import *
 context.log_level='debug'
-context.arch='i386'
+context.arch='amd64'
+# context.terminal=['ConEmu.exe']
 # context.timeout=10000
-is_debug=0
+is_debug=1
 if is_debug:
     if context.arch=='amd64':
         p=process('./dotest64.exe')
+        # windbg.attach(p,'.echo 0000')
         gdb.attach(p) 
-        # windbg.attach(p)
-        # x64dbg.attach(p)
     else:
         p=process('./dotest.exe')
-        gdb.attach(p)
-        # windbg.attach(p)
-        # x64dbg.attach(p)
+        windbg.attach(p,'.echo 0000')
+        # gdb.attach(p)
 else:
     if context.arch=='amd64':
         p=process('./dotest64.exe')
     else:
         p=process('./dotest.exe')
-        
-p.recvuntil('please input:\r\n')
+# p.recvuntil('please input:\r\n')
+p.recvline()
 # pause()
 # p.sendline('aaaaaaaaaaaaaaaa')
 p.interactive()

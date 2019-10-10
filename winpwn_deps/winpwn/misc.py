@@ -7,7 +7,7 @@ from context import context
 def run_in_new_terminal(command, terminal = None, args = None):
     if terminal is None:
         if (context.terminal):
-            terminal=[context.terminal]
+            terminal=context.terminal
         else:
             terminal=['ConEmu.exe','-Reuse','-run']
     if isinstance(args, tuple):    # args associety with tmminal not process
@@ -29,10 +29,9 @@ def run_in_new_terminal(command, terminal = None, args = None):
     return ter
 
 def waiting_for_debugger():
-    raw_input(parse.color("[=]: pausing\n\tPress Enter to Continue",'purple'))
+    raw_input(parse.color("[=]: pausing\n\twaiting for debugger",'purple'))
 def pause():
-    print(parse.color("[=]: pausing",'purple'))
-
+    raw_input(parse.color("[=]: pausing",'purple'))
 def sleep(n):
     time.sleep(n)
 

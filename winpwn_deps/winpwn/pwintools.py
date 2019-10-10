@@ -215,8 +215,6 @@ class Pipe(object):
         """write(buffer) sends the buffer on the pipe"""
         windows.winproxy.WriteFile(self._wpipe, buffer)
 
-
-
 class Remote(object):
     """
         Wrapper for remote connections
@@ -486,7 +484,14 @@ class Process(windows.winobject.process.WinProcess):
             lpCommandLine = (" ".join([str(a) for a in self.cmd]))
             lpApplicationName = None
         try:
-            windows.winproxy.CreateProcessA(lpApplicationName, lpCommandLine=lpCommandLine, bInheritHandles=True, dwCreationFlags=self.flags, lpProcessInformation=ctypes.byref(proc_info), lpStartupInfo=lpStartupInfo)
+            windows.winproxy.CreateProcessA(
+                lpApplicationName, 
+                lpCommandLine=lpCommandLine, 
+                bInheritHandles=True, 
+                dwCreationFlags=self.flags, 
+                lpProcessInformation=ctypes.byref(proc_info), 
+                lpStartupInfo=lpStartupInfo
+            )
             windows.winproxy.CloseHandle(proc_info.hThread)
             self.__pid = proc_info.dwProcessId
             self.__phandle = proc_info.hProcess
