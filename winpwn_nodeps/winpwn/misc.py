@@ -27,11 +27,10 @@ def run_in_new_terminal(command, terminal = None, args = None):
     ter=subprocess.Popen(argv)
     return ter
 
-# def waiting_for_debugger():
-#     raw_input(parse.color("[=]: pausing\n\twaiting for debugger",'purple'))
 
 def pause():
-    raw_input(parse.color("[=]: pausing",'purple'))
+    print(parse.color("\n[=]: pausing",'purple'))
+    sys.stdin.readline()
 
 def sleep(n):
     time.sleep(n)
@@ -44,11 +43,12 @@ def p64(i):
     if sys.version_info[0]==3:
         return Latin1_decode(l)
     return l
+
 def u64(s):
     """u64(s) -> int
     Unpack 64 bits integer from a little endian str representation
     """
-    return struct.unpack('<Q', s)[0]
+    return struct.unpack('<Q', Latin1_encode(s))[0]
 
 def p32(i):
     """p32(i) -> str
@@ -63,7 +63,7 @@ def u32(s):
     """u32(s) -> int
     Unpack 32 bits integer from a little endian str representation
     """
-    return struct.unpack('<I', s)[0]
+    return struct.unpack('<I', Latin1_encode(s))[0]
     
 def p16(i):
     """p16(i) -> str
@@ -74,12 +74,11 @@ def p16(i):
         return Latin1_decode(l)
     return l
 
-
 def u16(s):
     """u16(s) -> int
     Unpack 16 bits integer from a little endian str representation
     """
-    return struct.unpack('<H', s)[0]
+    return struct.unpack('<H', Latin1_encode(s))[0]
 
 def p8(i):
     """p16(i) -> str
@@ -94,26 +93,25 @@ def u8(s):
     """u16(s) -> int
     Unpack 16 bits integer from a little endian str representation
     """
-    return struct.unpack('<B', s)[0]
+    return struct.unpack('<B', Latin1_encode(s))[0]
 
 
 def Latin1_encode(string):
     # deal input
     if sys.version_info[0]==3:
         # print(sys.getdefaultencoding())
-        return bytes(string,sys.getdefaultencoding())
+        return bytes(string,"Latin1")
     return bytes(string)
 def Latin1_decode(string):
     if sys.version_info[0]==3:
         return str(string,'Latin1')
     return string #.decode('Latin1')
 
-# def Latin1_print(buf):
 
 
 class parse():
     @classmethod
-    def color(clx,content,color):
+    def color(clx,content,color='purple'):
         c = {
             "black": 30,
             "red": 31,
@@ -147,30 +145,46 @@ class parse():
         if not all:
             if len(lines)>=0x20:
                 lines=lines[0:8]+['......\n']+lines[-8:]
-        return ''.join(lines).strip()
+        print(''.join(lines).strip())
 
     @classmethod
     def mark(clx,type):
         line="\n[+]: {}"
         if type=='recv':
             line=line.format('Recving')
-            return clx.color(line,'blue')
+            print(clx.color(line,'blue'))
+            return
         elif type=='send':
             line=line.format('Sending')
-            return clx.color(line,'cyan')
+            print(clx.color(line,'cyan'))
+            return
         elif type=='attach':
             line=line.format('attaching')
-            return clx.color(line,'green')
+            print(clx.color(line,'green'))
+            return
         elif type=='interact':
             line=line.format('Interacting')
-            return clx.color(line,'green')
+            print(clx.color(line,'green'))
+            return
+        # elif type=='log':
+            # line=line.format('log')
+            # print(clx.color(line,'purple'))
+            # return            
         line="\n[-]: {}"
         if type=='recved':
             line=line.format('^Recved')
-            return clx.color(line,'blue')            
+            print(clx.color(line,'blue'))
+            return            
         elif type=='sended':
             line=line.format('^Sended')
-            return clx.color(line,'cyan')
+            print(clx.color(line,'cyan'))
+            return
         elif type=='attached':
             line=line.format('^attached')
-            return clx.color(line,'green')
+            print(clx.color(line,'green'))
+            return
+    @classmethod
+    def log(clx,con='',color='yellow'):
+        line="\n[+]: log\n"
+        line+=clx.color(line,'purple')+clx.color(con,color)
+        print(line)

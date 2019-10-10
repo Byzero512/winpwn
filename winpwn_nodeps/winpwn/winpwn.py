@@ -25,14 +25,14 @@ class tube(object):
     
     def send(self,buf):
         rs=self.write(buf)
-        print(parse.mark('send'))     
+        parse.mark('send')   
         if context.log_level=='debug':
-            print(parse.hexdump(buf))
+            parse.hexdump(buf)
         if context.length is None or len(buf)<context.length:    
             sys.stdout.write(buf)
         else:
-            print(parse.color("[-]: str too long, not show sending",'red'))
-        print(parse.mark('sended'))
+            parse.color("[-]: str too long, not show sending",'red')
+        parse.mark('sended')
         return rs
     
     def sendline(self,buf,newline=None):
@@ -43,7 +43,7 @@ class tube(object):
     def recv(self,n,timeout=None,local_call=False):
         # try to read n bytes, no exception
         if not local_call:
-            print(parse.mark('recv'))
+            parse.mark('recv')
         buf=''
         # if var.ter is not None:
         #     while(len(buf)!=n):
@@ -52,36 +52,36 @@ class tube(object):
         buf=self.read(n, timeout)
         if not local_call:
             if context.log_level=='debug':
-                print(parse.hexdump(buf))
+                parse.hexdump(buf)
             if buf.endswith(context.newline):
                 sys.stdout.write(buf)
             else:
                 print(buf)
-            print(parse.mark('recved'))
+            parse.mark('recved')
         return buf
 
     def recvn(self,n,timeout=None,local_call=False):
         # must recv n bytes within timeout
         if not local_call:
-            print(parse.mark('recv'))
+            parse.mark('recv')
         buf=''
         buf = self.recv(n, timeout,local_call=True)
         if len(buf) != n:
             raise(EOFError("Timeout when use recvn"))
         if not local_call :
             if context.log_level=='debug':
-                print(parse.hexdump(buf))
+                parse.hexdump(buf)
             if buf.endswith(context.newline):
                 sys.stdout.write(buf)
             else:
                 print(buf)
-            print(parse.mark('recved'))
+            parse.mark('recved')
         return buf
     
     def recvuntil(self,delim,timeout=None):
         if timeout is None:
             timeout=self.timeout
-        print(parse.mark('recv'))
+        parse.mark('recv')
         buf = ''
         st=time.time()
         xt=0.0
@@ -93,12 +93,12 @@ class tube(object):
                     break
         if buf.endswith(delim):
             if context.log_level=='debug':
-                print(parse.hexdump(buf))
+                parse.hexdump(buf)
             if buf.endswith(context.newline):
                 sys.stdout.write(buf)
             else:
                 print(buf)
-            print(parse.mark('recved'))
+            parse.mark('recved')
             return buf
         else:
             raise(EOFError(parse.color("[Error]: Recvuntil error",'red')))
@@ -109,21 +109,21 @@ class tube(object):
         return self.recvuntil(newline)
 
     def recvall(self,timeout=None):
-        print(parse.mark('recv'))
+        parse.mark('recv')
         buf=self.recv(0x100000, timeout,local_call=True)
         if context.log_level=='debug': # and not interactive:
-            print(parse.hexdump(buf))
+            parse.hexdump(buf)
         if buf.endswith(context.newline):
             sys.stdout.write(buf)
         else:
             print(buf)
-        print(parse.mark('recved'))
+        parse.mark('recved')
         return buf   
 
     # based on read/write
     def interactive(self):
         # it exited, contrl+C, timeout
-        print(parse.mark('interact'))
+        parse.mark('interact')
         go = threading.Event()
         go.clear()
         def recv_thread():
@@ -132,21 +132,21 @@ class tube(object):
                     try:
                         buf = self.read(0x10000,0.125,interactive=True)
                         if buf:
-                            print(parse.mark('recv'))
-                            if context.log_level=='debug': # and not interactive:
-                                print(parse.hexdump(buf))
+                            parse.mark('recv')
+                            if context.log_level=='debug':
+                                parse.hexdump(buf)
                             if buf.endswith(context.newline):                    
                                 sys.stdout.write(buf)
                             else:
                                 print(buf)
-                            print(parse.mark('recved'))
+                            parse.mark('recved')
                         go.wait(0.2)
                     except:      # does this handle have use?????
-                        print(parse.color('[pwn-EOF]: exited','red'))
+                        parse.color('[pwn-EOF]: exited','red')
                         go.set()
             except KeyboardInterrupt:
                 go.set()
-                print(parse.color('[pwn-EOF]: exited','red'))
+                parse.color('[pwn-EOF]: exited','red')
         t = threading.Thread(target = recv_thread)
         t.daemon = True
         t.start()
@@ -157,16 +157,16 @@ class tube(object):
                 try:
                     if self.is_exit():
                         time.sleep(0.2) # wait for time to read output
-                        print(parse.color('[pwn-EOF]: exited','red')) 
+                        # parse.color('[pwn-EOF]: exited','red')
                     buf = sys.stdin.readline()
                     if buf:
                         self.write(buf)
                 except:     # exited
                     go.set()
-                    print(parse.color('[pwn-EOF]: exited','red'))
+                    parse.color('[pwn-EOF]: exited','red')
         except KeyboardInterrupt: # control+C
             go.set()
-            print(parse.color('[pwn-EOF]: exited','red'))
+            parse.color('[pwn-EOF]: exited','red')
         while t.is_alive():
             t.join(timeout = 0.1)
 
