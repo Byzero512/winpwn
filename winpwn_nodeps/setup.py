@@ -2,7 +2,7 @@ from setuptools import *
 
 setup(
     name='winpwn',
-    version='0.0.8',
+    version='0.1.3',
     description='mini pwntools for windows',
     author='byzero512',
     author_email='byzero512@gamil.com',
