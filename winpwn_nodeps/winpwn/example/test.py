@@ -1,7 +1,7 @@
 from winpwn import *
 context.log_level='debug'
 context.arch='i386'
-is_debug=1
+is_debug=0
 if is_debug:
     if context.arch=='amd64':
         p=process(['./dotest64.exe','aaaaaaaaaaaaa'])

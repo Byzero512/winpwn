@@ -1,6 +1,7 @@
 # -*- coding=Latin1 -*-
 import tempfile
 import os
+import sys
 import subprocess
 
 from .context import context
@@ -35,7 +36,7 @@ class gdb():
         """
             use context.arch or gdbType to decide mingw-gdb64 or mingw-gdb to be used
         """
-        print(misc.parse.mark('attach'))
+        misc.parse.mark('attach')
         # gdbType=gdbType        # mingw-gdb or windbg, mingw-gdb in default
         gdbType=var.debugger[context.arch]['gdb']
         load_Dbg=None        # how to attach to process and init debugger
@@ -76,7 +77,7 @@ class gdb():
         while(os.path.exists(pre_tmp.name)):    # wait_for_debugger
             pass
         var.ter=ter
-        print(misc.parse.mark('attached'))
+        misc.parse.mark('attached')
         return var.ter.pid
     @classmethod
     def debug():
@@ -85,7 +86,8 @@ class gdb():
 class windbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        print(misc.parse.mark('attach'))
+        
+        misc.parse.mark('attach')
         load_windbg=[var.debugger[context.arch]['windbg'],'-p']
         if isinstance(target,process):
             load_windbg.append(str(target.pid))
@@ -106,7 +108,7 @@ class windbg():
         while(os.path.exists(tmp.name)):    # wait_for_debugger
             pass
         var.ter=ter
-        print(misc.parse.mark('attached'))
+        misc.parse.mark('attached')
         return var.ter.pid
 
     @classmethod
@@ -123,7 +125,8 @@ class x64dbg():
             load_x64dbg.append(str(pid))
         ter=subprocess.Popen(load_x64dbg)
         var.ter=ter
-        raw_input(misc.parse.color("[=]: pausing\n\twaiting for debugger",'purple'))
+        misc.parse.color("[=]: pausing\n\twaiting for debugger",'purple')
+        sys.stdin.readline()
         return var.ter.pid                
 
     @classmethod

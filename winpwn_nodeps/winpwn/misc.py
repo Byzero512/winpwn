@@ -165,11 +165,7 @@ class parse():
         elif type=='interact':
             line=line.format('Interacting')
             print(clx.color(line,'green'))
-            return
-        # elif type=='log':
-            # line=line.format('log')
-            # print(clx.color(line,'purple'))
-            # return            
+            return       
         line="\n[-]: {}"
         if type=='recved':
             line=line.format('^Recved')

@@ -2,8 +2,7 @@
 import os
 import sys
 cwd = os.path.dirname(__file__)
-sys.path.append(cwd)
-
+sys.path=[cwd]+sys.path[1:]
 from .winpwn import process,remote
 from .dbg import dbg,gdb,windbg,x64dbg
 from .context import context
