@@ -19,7 +19,7 @@
         }, 
         "amd64": {
             "x64dbg": "", 
-            "gdb": "b *0\n", 
+            "gdb": "", 
             "windbg": ".load pykd;!py -g winext\\TWindbg\\TWindbg.py;"
         }
     }
