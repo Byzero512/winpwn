@@ -179,8 +179,25 @@ class parse():
             line=line.format('^attached')
             print(clx.color(line,'green'))
             return
+    # @classmethod
+    # def log(clx,con='',color='yellow'):
+    #     line="\n[+]: log\n"
+    #     line+=clx.color(line,'purple')+clx.color(con,color)
+    #     print(line)
     @classmethod
-    def log(clx,con='',color='yellow'):
-        line="\n[+]: log\n"
-        line+=clx.color(line,'purple')+clx.color(con,color)
-        print(line)
+    def log(clx,*args):
+        print(clx.color("[+]: log",'purple'))
+        line1=''
+        j=0
+        for i in args:
+            if j!=0 and j%2==0:
+                line1+='\n'
+            if isinstance(i,int):
+                line1+=hex(i).strip('L')+'\t'
+            elif isinstance(i,str):
+                line1+=i+'\t'
+            elif isinstance(i,long):
+                line1+=hex(i).strip('L')+'\t'
+            j+=1
+        print(clx.color(line1,'yellow'))
+        print(clx.color('[-]: logged','purple'))
