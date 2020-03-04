@@ -9,3 +9,4 @@ class context():
     tick=0.0625
     length=None
     newline='\r\n'
+    pie=None

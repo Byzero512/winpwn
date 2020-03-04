@@ -8,7 +8,7 @@ import time
 
 from .win import winProcess
 from .context import context
-from .misc import parse,Latin1_encode,Latin1_decode
+from .misc import parse,Latin1_encode,Latin1_decode,NOPIE,PIE
 import var
 
 class tube(object):
@@ -214,6 +214,18 @@ class remote(tube):
 
 class process(tube):
         def __init__(self,argv,pwd=None,flags=None):
+            # en/disable PIE, need: pip install pefile
+            if context.pie is not None:
+                fpath=""
+                if not isinstance(argv,list):
+                    fpath=argv
+                else:
+                    fpath=argv[0]
+                if context.pie:
+                    PIE(fpath)
+                else:
+                    NOPIE(fpath)
+
             self.Process=winProcess(argv,pwd,flags)
             self.pid=self.Process.pid
         def read(self,n,timeout=None,interactive=False):

@@ -27,6 +27,20 @@ def run_in_new_terminal(command, terminal = None, args = None):
     ter=subprocess.Popen(argv)
     return ter
 
+def NOPIE(fpath=""):
+    import pefile
+    pe_fp=pefile.PE(fpath)
+    pe_fp.OPTIONAL_HEADER.DllCharacteristics &= \
+        ~pefile.DLL_CHARACTERISTICS["IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE"]
+    pe_fp.OPTIONAL_HEADER.CheckSum = pe_fp.generate_checksum()
+    pe_fp.write(fpath)
+def PIE(fpath=""):
+    import pefile
+    pe_fp=pefile.PE(fpath)
+    pe_fp.OPTIONAL_HEADER.DllCharacteristics |= \
+        pefile.DLL_CHARACTERISTICS["IMAGE_DLLCHARACTERISTICS_DYNAMIC_BASE"]
+    pe_fp.OPTIONAL_HEADER.CheckSum = pe_fp.generate_checksum()
+    pe_fp.write(fpath)
 
 def pause():
     print(parse.color("\n[=]: pausing",'purple'))
