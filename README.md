@@ -51,6 +51,8 @@ for CTF windows pwn
    + gdb.attach(p, script="b *0x401000")
    + windbg.attach(p,script="bp 0x123456")
    + x64dbg.attach(p) #can not parse script file yet
+5. PIE(exe_fpath="")/NOPIE(exe_fpath="")
+6. asm("push ebp")/disasm("\x55")
 ```
 
 ### configure
