@@ -17,7 +17,7 @@ class tube(object):
     def set_timeout(self,timeout=None):
         pass
     timeout=property(get_timeout,set_timeout)
-
+    
     def read(self,n,timeout=None):
         pass
     def write(self,buf):
@@ -25,14 +25,15 @@ class tube(object):
     
     def send(self,buf):
         rs=self.write(buf)
-        parse.mark('send')   
-        if context.log_level=='debug':
-            parse.hexdump(buf)
-        if context.length is None or len(buf)<context.length:    
-            sys.stdout.write(buf)
-        else:
-            parse.color("[-]: str too long, not show sending",'red')
-        parse.mark('sended')
+        if not context.noout:
+            parse.mark('send')
+            if context.log_level=='debug':
+                parse.hexdump(buf)
+            if context.length is None or len(buf)<context.length:    
+                sys.stdout.write(buf)
+            else:
+                parse.color("[-]: str too long, not show sending",'red')
+            parse.mark('sended')
         return rs
     
     def sendline(self,buf,newline=None):
@@ -42,15 +43,11 @@ class tube(object):
     
     def recv(self,n,timeout=None,local_call=False):
         # try to read n bytes, no exception
-        if not local_call:
+        if not local_call and not context.noout:
             parse.mark('recv')
         buf=''
-        # if var.ter is not None:
-        #     while(len(buf)!=n):
-        #         buf+=self.read(n-len(buf),timeout)
-        # else:
         buf=self.read(n, timeout)
-        if not local_call:
+        if not local_call and not context.noout:
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
@@ -62,13 +59,13 @@ class tube(object):
 
     def recvn(self,n,timeout=None,local_call=False):
         # must recv n bytes within timeout
-        if not local_call:
+        if not local_call and not context.noout:
             parse.mark('recv')
         buf=''
         buf = self.recv(n, timeout,local_call=True)
         if len(buf) != n:
             raise(EOFError("Timeout when use recvn"))
-        if not local_call :
+        if not local_call and not context.noout:
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
@@ -81,7 +78,8 @@ class tube(object):
     def recvuntil(self,delim,timeout=None):
         if timeout is None:
             timeout=self.timeout
-        parse.mark('recv')
+        if not context.noout:
+            parse.mark('recv')
         buf = ''
         st=time.time()
         xt=0.0
@@ -91,7 +89,7 @@ class tube(object):
                 xt=time.time()
                 if (xt-st)>=timeout:
                     break
-        if buf.endswith(delim):
+        if buf.endswith(delim) and not context.noout:
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
@@ -111,13 +109,14 @@ class tube(object):
     def recvall(self,timeout=None):
         parse.mark('recv')
         buf=self.recv(0x100000, timeout,local_call=True)
-        if context.log_level=='debug': # and not interactive:
-            parse.hexdump(buf)
-        if buf.endswith(context.newline):
-            sys.stdout.write(buf)
-        else:
-            print(buf)
-        parse.mark('recved')
+        if not context.noout:
+            if context.log_level=='debug': # and not interactive:
+                parse.hexdump(buf)
+            if buf.endswith(context.newline):
+                sys.stdout.write(buf)
+            else:
+                print(buf)
+            parse.mark('recved')
         return buf   
 
     # based on read/write

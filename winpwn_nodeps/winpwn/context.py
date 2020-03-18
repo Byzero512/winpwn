@@ -10,3 +10,4 @@ class context():
     length=None
     newline='\r\n'
     pie=None
+    noout=None
