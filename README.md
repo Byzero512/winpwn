@@ -17,6 +17,7 @@ for CTF windows pwn
 2. other config
    + copy file: https://github.com/Byzero512/winpwn/blob/master/winpwn_nodeps/.winpwn to your windows HOMEDIR
    + configure path of debugger in ".winpwn"
+3. run winpwn with python in cmder(CMD not Bash)
 
 ### usage
 ```python
