@@ -4,32 +4,19 @@ for CTF windows pwn
 
 ### pre
 1. there are two versions of winpwn: winpwn-deps and winpwn-nodeps
-2. for winpwn-deps: 
-   + based on pwintools,but I complete the IO interactive and debug module
-   + have bug, and I will not update it anymore, so I suggest you use winpwn-nodeps
-   + not support python3 and just can install from source code
-3. for winpwn-nodeps: written by myself. 
-   + just use ctypes to invoke Windows API. 
-   + support python2.7 and python3
-   + <b>can use pip to install winpwn-nodeps</b>
+2. winpwn-deps: based on pwintools, have bugs and will not update any more, need install from source.
+3. winpwn-nodeps:
+   + support python2 and python3
+   + for basic function, just use ctypes to invoke Windows API. 
 
 
-## install
-1. for debug
-   + if you install by source code, modify the PATH of debugger in <b>winpwn/var.py</b>
-   + or if you use winpwn-nodeps, touch a json file in HOMEDIR(named "<b>.winpwn</b>") whose content format refers winpwn-nodeps/.winpwn
-2. <b>I just test winpwn on cmder</b>(if use cmder , please must use it on <b>"cmd::cmder as Admin"</b>, not bash)
-
-### winpwn-nodeps
-
-#### install with pip
+### install
+1. install with pip
    + <b>pip install winpwn </b>
    + <b>or pip3 install winpwn</b>
-
-#### install from source code
-1. git clone  https://github.com/Byzero512/winpwn.git
-2. cd winpwn\winpwn-nodeps
-3. python setup.py install / python3 setup.py install
+2. other config
+   + copy file: https://github.com/Byzero512/winpwn/blob/master/winpwn_nodeps/.winpwn to your windows HOMEDIR
+   + configure path of debugger in ".winpwn"
 
 ### usage
 ```python
@@ -51,10 +38,10 @@ for CTF windows pwn
    + gdb.attach(p, script="b *0x401000")
    + windbg.attach(p,script="bp 0x123456")
    + x64dbg.attach(p) #can not parse script file yet
-5. disable PIE: need module: pefile, please install it with "pip/pip3 install pefile"
+5. disable PIE: need "pip install pefile"
    + PIE(exe_fpath="")
    + NOPIE(exe_fpath="")
-6. asm/disasm, need keystone/capstone, please them with "pip/pip3 install keystone/capstone"
+6. asm/disasm, need keystone/capstone, need "pip install keystone/capstone"
    + asm("push ebp")
    + disasm("\x55")
 ```
