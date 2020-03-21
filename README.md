@@ -42,7 +42,7 @@ for CTF windows pwn
 5. disable PIE: need "pip install pefile"
    + PIE(exe_fpath="")
    + NOPIE(exe_fpath="")
-6. asm/disasm, need keystone/capstone, need "pip install keystone/capstone"
+6. asm/disasm, need "pip install keystone/capstone"
    + asm("push ebp")
    + disasm("\x55")
 ```
@@ -51,11 +51,7 @@ for CTF windows pwn
 if you want to use debugger like gdb-peda, you need to deal with the deps yourself
 
 #### mingw-gdb
-for gdb-peda like show  as bellow, you need:
-1. mingw-gdb installer: 
-+ https://sourceforge.net/projects/mingw-w64/files/External%20binary%20packages%20%28Win64%20hosted%29/gdb/
-2. https://github.com/Byzero512/wibe (a gdb-peda like gdb-script supports mingw-gdb on windows)
-3. https://github.com/Byzero512/vmmap-win-cmd (for the command "vmmap" in wibe)
+1. https://github.com/Byzero512/wibe (gdb-peda like; just support python2)
 
 #### windbg
 1. pykd
