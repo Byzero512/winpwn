@@ -24,6 +24,8 @@ for CTF windows pwn
 1. process
    + process("./pwn")
    + process(["./pwn"])
+   + p.readm(addr,n) read process memory
+   + p.writem(addr,con="") write process memory
 2. remote
    + remote("127.0.0.1", 65535)
    
@@ -45,6 +47,8 @@ for CTF windows pwn
 6. asm/disasm, need "pip install keystone/capstone"
    + asm("push ebp")
    + disasm("\x55")
+6. winfile(fpath="./main.exe")
+   + winfile.symbols["CreateProcessA"]: return IAT/EAT offset of CreateProcessA in image
 ```
 
 ### configure
