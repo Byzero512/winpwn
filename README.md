@@ -40,6 +40,7 @@ pip install capstone
    + context.log_level="" # or "debug"
    + context.terminal=[ ]
    + context.newline="\r\n"
+   + context.arch="i386"
    
 4. dbg: gdb(mingw gdb), windbg, x64dbg
    + gdb.attach(p, script="b *0x401000")
