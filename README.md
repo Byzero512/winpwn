@@ -16,8 +16,12 @@ for CTF windows pwn
    + <b>pip install winpwn </b>
    + <b>or pip3 install winpwn</b>
 2. other config
-   + copy file: https://github.com/Byzero512/winpwn/blob/master/winpwn_nodeps/.winpwn to your windows HOMEDIR
-   + configure path of debugger in ".winpwn"
+   + copy file: https://github.com/Byzero512/winpwn/blob/master/winpwn_nodeps/.winpwn to your windows HOMEDIR and configure it yourself
+
+optional:
+ppip install pefile
+pip install keystone
+pip install capstone
 
 ### usage
 ```python
