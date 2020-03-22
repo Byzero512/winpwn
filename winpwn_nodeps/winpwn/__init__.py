@@ -10,6 +10,7 @@ from .dbg import dbg,gdb,windbg,x64dbg
 from .context import context
 from .misc import p8,p16,p32,p64,u8,u16,u32,u64,parse,pause,sleep,NOPIE,PIE
 from .asm import asm,disasm
+from .winfile import winfile
 
 from var import init_var
 init_var()
@@ -22,7 +23,8 @@ __all__=[
     'process','remote','dbg','gdb','windbg','x64dbg','context',
     'p8','p16','p32','p64','u8','u16','u32','u64',
     'pause','sleep','hexdump','color','log',"NOPIE","PIE",
-    "asm","disasm"
+    "asm","disasm",
+    "winfile"
 ]
 
 # winpwn  dbg  misc

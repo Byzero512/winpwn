@@ -15,7 +15,7 @@ import os
 import sys
 import time
 
-from ctypes import windll,byref,sizeof,wintypes,create_string_buffer,GetLastError
+from ctypes import windll,byref,sizeof,wintypes,create_string_buffer,GetLastError,c_size_t
 from ctypes.wintypes import HANDLE,LPVOID,LPSTR,DWORD,WORD,BOOL,BYTE
 from ctypes import POINTER,Structure
 
@@ -26,6 +26,11 @@ from misc import parse,Latin1_encode,Latin1_decode
 HANDLE_FLAG_INHERIT=1
 STARTF_USESTDHANDLES=256
 STILL_ACTIVE=259
+CREATE_SUSPENDED=0x4
+PROCESS_VM_READ=0x10
+PROCESS_VM_WRITE=0x20
+PROCESS_VM_OPERATION=0x8
+PAGE_READWRITE=0x4
 
 # for createPipe
 class SECURITY_ATTRIBUTES(Structure):
@@ -64,6 +69,39 @@ class STARTUPINFO(Structure):
         ('hStdOutput',HANDLE),
         ('hStdError',HANDLE),
     ]
+
+# class winApi():
+    # @classmethod
+    # def VirtualAllocEx(clx):
+    #     pass
+    # @classmethod
+    # def VirtualFreeEx(clx,addr,size):
+    #     pass
+    # @classmethod
+    # def GetModuleHandle(clx):
+    #     pass
+    # @classmethod
+    # def VirtualProtectEx(clx,hProcess,addr,size,protect,oldprotect):
+    #     return windll.kernel32.VirtualProtectEx(hProcess,)
+    # @classmethod
+    # def ReadProcessMemory(clx,hProcess,addr,n):
+    #     beenRead=wintypes.DWORD()
+    #     buf=create_string_buffer(n)
+    #     x=windll.kernel32.ReadProcessMemory(self.hProcess,addr,buf,n,byref(beenRead))
+    #     if x==0:
+    #         raise(EOFError())
+    #     return Latin1_decode(buf.raw)
+    # @classmethod
+    # def WriteProcessMemory(clx,hProcess,addr,buf):
+    #     n=len(buf)
+    #     written=wintypes.DWORD()
+    #     x=windll.kernel32.WriteProcessMemory(self.hProcess,addr,buf,n,byref(written))
+    #     if x==0:
+    #         raise(EOFError())
+    #     return written.value
+    # @classmethod
+    # def ResumeThread(clx,hThread):
+    #     return windll.kernel32.ResumeThread(hThread)
 
 class winPipe():
     def __init__(self,bInheritHandle = 1):
@@ -142,6 +180,8 @@ class winProcess(object):
         self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe=self.pipe.getHandle()
         self.pid=0
         self.phandle=0
+        self.tid=0
+        self.thandle=0
         self.create(argv,pwd,flags)
 
     def create(self,argv,pwd=None,flags=None):
@@ -187,6 +227,8 @@ class winProcess(object):
             # windll.kernel32.CloseHandle(lpProcessInformation.hThread)
             self.pid=lpProcessInformation.dwProcessId
             self.phandle=lpProcessInformation.hProcess
+            self.tid=lpProcessInformation.dwThreadId
+            self.thandle=lpProcessInformation.hThread
             print("process runing, pid: {}".format(hex(self.pid)))
         except:
             raise(EOFError(parse.color("[-]: Create process error",'red')))
@@ -204,10 +246,42 @@ class winProcess(object):
     def close(self):           # need to kill process ..............
         self.pipe.close()
         windll.kernel32.TerminateProcess(self.phandle,1)
-    def readMem(self):
-        pass
-    def writeMem(self):
-        pass      
+    def readm(self,addr,n):
+        addr=c_size_t(addr)
+        handle=windll.kernel32.OpenProcess(PROCESS_VM_READ|PROCESS_VM_WRITE|PROCESS_VM_OPERATION,0,self.pid)
+        oldprotect=wintypes.DWORD()
+        x=windll.kernel32.VirtualProtectEx(handle,n,PAGE_READWRITE,byref(oldprotect))
+        
+        buf=create_string_buffer(n)
+        
+        x=windll.kernel32.ReadProcessMemory(handle,addr,buf,n,0)
+        if x==0:
+            raise(MemoryError)
+
+        windll.kernel32.VirtualProtectEx(handle,addr,n,oldprotect.value,0)
+        windll.kernel32.CloseHandle(handle)
+
+        return Latin1_decode(buf.raw)
+
+    def writem(self,addr,buf):
+        buf=Latin1_encode(buf)
+        addr=c_size_t(addr)
+        n=len(buf)
+        # print(n)
+        handle=windll.kernel32.OpenProcess(PROCESS_VM_READ|PROCESS_VM_WRITE|PROCESS_VM_OPERATION,0,self.pid)
+        
+        oldprotect=wintypes.DWORD()
+        x=windll.kernel32.VirtualProtectEx(handle,addr,n,PAGE_READWRITE,byref(oldprotect))
+        written=c_size_t(0)
+        x=windll.kernel32.WriteProcessMemory(handle,addr,buf,n,byref(written))
+        if x==0:
+            raise(MemoryError)
+        
+        windll.kernel32.VirtualProtectEx(handle,addr,n,oldprotect.value,0)
+        windll.kernel32.CloseHandle(handle)
+
+        return written.value
+
     def get_timeout(self):
         return self.pipe.timeout
     def set_timeout(self,timeout=None):

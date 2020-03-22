@@ -237,6 +237,10 @@ class process(tube):
             return buf
         def write(self, buf):
             return self.Process.write(buf)
+        def readm(self,addr,n):
+            return self.Process.readm(addr,n)
+        def writem(self,addr,con):
+            return self.Process.writem(addr,con)
         def close(self):
             self.Process.close()        # need to kill process
         def is_exit(self):

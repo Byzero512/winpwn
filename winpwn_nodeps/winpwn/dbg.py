@@ -9,7 +9,6 @@ from .winpwn import process
 import misc
 import var
 
-
 class dbg(object):
     @classmethod
     def attach(clx,target,script="",sysroot=None):
@@ -67,7 +66,7 @@ class gdb():
         script_tmp.write(misc.Latin1_encode(script))
         script_tmp.flush()
         script_tmp.close()
-
+        
         load_Dbg+=' -ix "{}"'.format(pre_tmp.name)
         load_Dbg+=' -ex source -command {}'.format(script_tmp.name)
         load_Dbg+=' -ex {}'.format('"shell del {}"'.format(script_tmp.name))
