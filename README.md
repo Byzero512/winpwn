@@ -52,8 +52,8 @@ pip install capstone
 6. asm/disasm, need "pip install keystone/capstone"
    + asm("push ebp")
    + disasm("\x55")
-6. winfile(fpath="./main.exe")
-   + winfile.symbols["CreateProcessA"]: return IAT/EAT offset of CreateProcessA in image
+7. winfile(fpath="./main.exe"), need "pip install pefile"
+   + winfile.symbols["CreateProcessA"]: return symbol's IAT/EAT offset of CreateProcessA by image base
 ```
 
 ### configure
