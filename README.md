@@ -12,11 +12,11 @@ for CTF windows pwn
 1. install with pip
    + <b>pip install winpwn </b>
    + <b>or pip3 install winpwn</b>
-2. other config
-   + copy file: https://github.com/Byzero512/winpwn/blob/master/.winpwn to your windows HOMEDIR then configure it yourself
-
-optional:
-ppip install pefile
+2. config for debug
+   + copy file ".winpwn" to your windows <br>HOMEDIR</br> 
+   + then configure it yourself
+3. optional:
+pip install pefile
 pip install keystone
 pip install capstone
 
@@ -25,8 +25,8 @@ pip install capstone
 1. process
    + process("./pwn")
    + process(["./pwn"])
-   + p.readm(addr,n) read process memory
-   + p.writem(addr,con="") write process memory
+   + p.readm(addr,n) # read process memory
+   + p.writem(addr,con="") # write process memory
 2. remote
    + remote("127.0.0.1", 65535)
    
@@ -37,7 +37,8 @@ pip install capstone
    + context.log_level="" # or "debug"
    + context.terminal=[ ]
    + context.newline="\r\n"
-   + context.arch="i386"
+   + context.arch="i386" # or "amd64"
+   + content.pie=None
    
 4. dbg: gdb(mingw gdb), windbg, x64dbg
    + gdb.attach(p, script="b *0x401000")
