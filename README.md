@@ -1,24 +1,23 @@
 ## winpwn: mini pwntools for Windows
-for CTF windows pwn
+for CTF windows pwn and IAT/EAT hook
 
 
 ### pre
 1. support python2 and python3
 2. for basic function, just use ctypes to invoke Windows API. 
 3. please run it with <b>cmder(CMD not Bash)</b> if you want to debug
-4. for full uage, get the code.
 
 ### install
 1. install with pip
    + <b>pip install winpwn </b>
    + <b>or pip3 install winpwn</b>
 2. config for debug
-   + copy file ".winpwn" to your windows <br>HOMEDIR</br> 
+   + copy file ".winpwn" to windows <br>HOMEDIR</br>
    + then configure it yourself
 3. optional:
-pip install pefile
-pip install keystone
-pip install capstone
+   + pip install pefile
+   + pip install keystone
+   + pip install capstone
 
 ### usage
 ```python
@@ -29,7 +28,7 @@ pip install capstone
    + p.writem(addr,con="") # write process memory
 2. remote
    + remote("127.0.0.1", 65535)
-   
+
 3. context
    + context.timeout=512
    + context.debugger="gdb" # or "windbg" or "x64dbg"
@@ -44,14 +43,16 @@ pip install capstone
    + gdb.attach(p, script="b *0x401000")
    + windbg.attach(p,script="bp 0x123456")
    + x64dbg.attach(p) #can not parse script file yet
+
 5. disable PIE: need "pip install pefile"
    + PIE(exe_fpath="")
    + NOPIE(exe_fpath="")
 6. asm/disasm, need "pip install keystone/capstone"
    + asm("push ebp")
    + disasm("\x55")
+   
 7. winfile(fpath="./main.exe"), need "pip install pefile"
-   + winfile.symbols["CreateProcessA"]: return symbol's IAT/EAT offset of CreateProcessA by image base
+   + winfile.symbols["CreateProcessA"] # return symbol's IAT/EAT offset of CreateProcessA by image base
 ```
 
 ### configure
