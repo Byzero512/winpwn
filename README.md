@@ -12,7 +12,7 @@ for CTF windows pwn and IAT/EAT hook
    + <b>pip install winpwn </b>
    + <b>or pip3 install winpwn</b>
 2. config for debug
-   + copy file ".winpwn" to windows <br>HOMEDIR</br>
+   + copy file ".winpwn" to windows <b>HOMEDIR</b>
    + then configure it yourself
 3. optional:
    + pip install pefile
@@ -23,7 +23,7 @@ for CTF windows pwn and IAT/EAT hook
 ```python
 1. process
    + process("./pwn")
-   + process(["./pwn"])
+   + process(["./pwn","argv[1]","argv[2]"])
    + p.readm(addr,n) # read process memory
    + p.writem(addr,con="") # write process memory
 2. remote
