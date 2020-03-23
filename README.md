@@ -3,20 +3,17 @@ for CTF windows pwn
 
 
 ### pre
-1. there are two versions of winpwn: winpwn-deps and winpwn-nodeps
-2. winpwn-deps: based on pwintools, have bugs and will not update any more, need install from source.
-3. winpwn:
-   + support python2 and python3
-   + for basic function, just use ctypes to invoke Windows API. 
-   + please run it with <b>cmder(CMD not Bash)</b> if you want to debug
-
+1. support python2 and python3
+2. for basic function, just use ctypes to invoke Windows API. 
+3. please run it with <b>cmder(CMD not Bash)</b> if you want to debug
+4. for full uage, get the code.
 
 ### install
 1. install with pip
    + <b>pip install winpwn </b>
    + <b>or pip3 install winpwn</b>
 2. other config
-   + copy file: https://github.com/Byzero512/winpwn/blob/master/winpwn_nodeps/.winpwn to your windows HOMEDIR and configure it yourself
+   + copy file: https://github.com/Byzero512/winpwn/blob/master/.winpwn to your windows HOMEDIR then configure it yourself
 
 optional:
 ppip install pefile
