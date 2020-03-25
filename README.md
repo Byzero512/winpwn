@@ -8,9 +8,9 @@ for CTF windows pwn and IAT/EAT hook
 3. please run it with <b>cmder(CMD not Bash)</b> if you want to debug
 
 ### install
+> use pip or pip3
 1. install with pip
    + <b>pip install winpwn </b>
-   + <b>or pip3 install winpwn</b>
 2. config for debug
    + copy file ".winpwn" to windows <b>HOMEDIR</b>
    + then configure it yourself
