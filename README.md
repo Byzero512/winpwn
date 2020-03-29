@@ -78,3 +78,7 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 ### x64dbg
 > because lacks some commandline options, so just can use x64dbg attach to process and can not deliver init script yet
+
+### refs
+1. https://github.com/masthoon/pwintools
+2. https://github.com/hakril/PythonForWindows
