@@ -222,7 +222,7 @@ class winProcess(object):
                 lpEnvironment,              
                 lpCurrentDirectory,         
                 byref(StartupInfo),         
-                byref(lpProcessInformation) 
+                byref(lpProcessInformation)
             )
             # windll.kernel32.CloseHandle(lpProcessInformation.hThread)
             self.pid=lpProcessInformation.dwProcessId

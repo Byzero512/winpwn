@@ -131,3 +131,28 @@ class x64dbg():
     @classmethod
     def debug(clx,target,script="",sysroot=None):
         pass
+
+class kernel():
+    @classmethod
+    def com(clx,com,script="",baudrate=115200):
+        misc.parse.mark('attach')
+        load_windbg=[var.debugger[context.arch]['windbgx']]
+        load_windbg+=["-k com:pipe,port={},baud={},reconnect".format(com,baudrate)]
+
+        script=var.debugger_init['windbgx']+'\n'+script
+        tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
+        tmp.write(misc.Latin1_encode(script))
+        tmp.flush()
+        tmp.close()
+        load_windbg += ['-c']             # exec command
+        load_windbg+=['"$$><{}'.format(tmp.name)+';.shell -x del {}"'.format(tmp.name)]
+        ter=subprocess.Popen(misc.Latin1_encode(' '.join(load_windbg)))
+        while(os.path.exists(tmp.name)):    # wait_for_debugger
+            misc.sleep(0.05)
+            pass
+        var.ter=ter
+        misc.parse.mark('attached')
+        return var.ter.pid
+    @classmethod
+    def net(clx):
+        pass

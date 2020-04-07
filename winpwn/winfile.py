@@ -27,8 +27,8 @@ class winfile(object):
                         Latin1_decode(exp.name):self._address+pe.DIRECTORY_ENTRY_EXPORT.struct.AddressOfFunctions+4*(exp.ordinal-1)
                     }
                 )
-        self.symbols.update(self.imsyms)
         self.symbols.update(self.exsyms)
+        self.symbols.update(self.imsyms)
     
     @property
     def address(self):
@@ -40,6 +40,7 @@ class winfile(object):
             self.imsyms.update({sym:base+self.imsyms[sym]})
         for sym in self.exsyms:
             self.exsyms.update({sym:base+self.exsyms[sym]})
-        self.symbols.update(self.imsyms)
         self.symbols.update(self.exsyms)
+        self.symbols.update(self.imsyms)
+        
             

@@ -5,7 +5,7 @@ import threading
 import sys
 import socket
 import time
-
+import os
 from .win import winProcess
 from .context import context
 from .misc import parse,Latin1_encode,Latin1_decode,NOPIE,PIE
@@ -30,7 +30,7 @@ class tube(object):
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if context.length is None or len(buf)<context.length:    
-                sys.stdout.write(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf))
             else:
                 parse.color("[-]: str too long, not show sending",'red')
             parse.mark('sended')
@@ -51,9 +51,11 @@ class tube(object):
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
-                sys.stdout.write(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf))
             else:
-                print(buf)
+                # x=Latin1_encode(buf)
+                # print(buf) # will error
+                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
             parse.mark('recved')
         return buf
 
@@ -69,9 +71,9 @@ class tube(object):
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
-                sys.stdout.write(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf))
             else:
-                print(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
             parse.mark('recved')
         return buf
     
@@ -93,9 +95,9 @@ class tube(object):
             if context.log_level=='debug':
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
-                sys.stdout.write(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf))
             else:
-                print(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
             parse.mark('recved')
             return buf
         else:
@@ -113,9 +115,9 @@ class tube(object):
             if context.log_level=='debug': # and not interactive:
                 parse.hexdump(buf)
             if buf.endswith(context.newline):
-                sys.stdout.write(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf))
             else:
-                print(buf)
+                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
             parse.mark('recved')
         return buf   
 
@@ -135,9 +137,9 @@ class tube(object):
                             if context.log_level=='debug':
                                 parse.hexdump(buf)
                             if buf.endswith(context.newline):                    
-                                sys.stdout.write(buf)
+                                os.write(sys.stdout.fileno(), Latin1_encode(buf))
                             else:
-                                print(buf)
+                                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
                             parse.mark('recved')
                         go.wait(0.2)
                     except:      # does this handle have use?????
@@ -185,16 +187,26 @@ class remote(tube):
         save_timeout=self.timeout
         if timeout is not None:
             self.timeout=timeout
-        buf=''
-        if interactive is False:
-            buf=Latin1_decode(self.sock.recv(n))
-        else:
-            try:                           # for interactive read
-                buf=Latin1_decode(self.sock.recv(n))
-            except socket.timeout:
-                return buf
+        buf=b''
+        # if interactive is False:
+        #     buf=Latin1_decode(self.sock.recv(n)) # have bugs; remote() have not considered remote-debug
+        # else:
+        #     try:                           # for interactive read
+        #         buf=Latin1_decode(self.sock.recv(n))
+        #     except socket.timeout:
+        #         return buf
+        try:
+            if interactive is False:
+                buf=self.sock.recv(n)
+            else:
+                buf=self.sock.recv(n)
+        except socket.timeout:
+            pass
         self.timeout=save_timeout
-        return buf
+        return Latin1_decode(buf)
+        # buf=Latin1_decode(buf)
+        # return buf
+
     def write(self,buf):
         return self.sock.send(Latin1_encode(buf))
     def close(self):
