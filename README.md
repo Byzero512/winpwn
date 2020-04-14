@@ -5,14 +5,13 @@ for CTF windows pwn and IAT/EAT hook
 ### pre
 1. support python2 and python3
 2. for basic function, just use ctypes to invoke Windows API. 
-3. please run it with <b>cmder(CMD not Bash)</b> if you want to debug
 
 ### install
 > use pip or pip3
 1. install with pip
    + <b>pip install winpwn </b>
 2. config for debug
-   + copy file ".winpwn" to windows <b>HOMEDIR</b>
+   + copy file (.winpwn)[./winpwn] to windows <b>HOMEDIR</b>
    + then configure it yourself
 3. optional:
    + pip install pefile
@@ -38,6 +37,11 @@ for CTF windows pwn and IAT/EAT hook
    + context.newline="\r\n"
    + context.arch="i386" # or "amd64"
    + content.pie=None
+   + context.dbginit=None # used to set debugger init script
+   + context.windbg=None # set debugger path, or use .winpwn to find debugger path
+   + context.windbgx=None
+   + content.gdb=None
+   + context.x64dbg=None
    
 4. dbg: gdb(mingw gdb), windbg, x64dbg
    + gdb.attach(p, script="b *0x401000")
@@ -59,7 +63,7 @@ for CTF windows pwn and IAT/EAT hook
 if you want to use debugger like gdb-peda, you need to deal with the deps yourself
 
 #### mingw-gdb
-1. https://github.com/Byzero512/wibe (gdb-peda like; just support python2)
+1. [wibe](https://github.com/Byzero512/wibe) (gdb-peda like; just support python2)
 
 #### windbg
 1. pykd
