@@ -64,7 +64,7 @@ for CTF windows pwn and IAT/EAT hook
 if you want to use debugger like gdb-peda, you need to deal with the deps yourself
 
 #### windbgx/windbg
-1. pykd
+1. [pykd](https://githomelab.ru/pykd/pykd)
 2. [bywin](https://github.com/Byzero512/debugger-scripts/tree/master/windbgx/bywin)
 
 #### mingw-gdb
@@ -72,13 +72,13 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 ## photos
 
-### mingw gdb
-
-![gdb](./img/winpwn1.png)
-
 ### windbg
 
 ![windbgx](./img/windbgx.png)
+
+### mingw gdb
+
+![gdb](./img/winpwn1.png)
 
 ### x64dbg
 > because lacks some commandline options, so just can use x64dbg attach to process and can not deliver init script yet
