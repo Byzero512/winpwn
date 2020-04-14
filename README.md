@@ -67,7 +67,7 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 #### windbg
 1. pykd
-2. TWindbg: https://github.com/bruce30262/TWindbg
+2. [bywin](https://github.com/Byzero512/debugger-scripts/tree/master/windbgx/bywin)
 
 
 ## photos
@@ -78,7 +78,7 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 ### windbg
 
-![windbg](./img/winpwn2.png)
+![windbgx](./img/windbgx.png)
 
 ### x64dbg
 > because lacks some commandline options, so just can use x64dbg attach to process and can not deliver init script yet
