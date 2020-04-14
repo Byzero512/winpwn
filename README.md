@@ -44,8 +44,9 @@ for CTF windows pwn and IAT/EAT hook
    + context.x64dbg=None
    
 4. dbg: gdb(mingw gdb), windbg, x64dbg
+   + windbgx.attach(p,script="bp 0x401000")
+   + windbg.attach(p,script="bp 0x401000")
    + gdb.attach(p, script="b *0x401000")
-   + windbg.attach(p,script="bp 0x123456")
    + x64dbg.attach(p) #can not parse script file yet
 
 5. disable PIE: need "pip install pefile"
