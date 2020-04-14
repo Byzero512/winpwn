@@ -21,14 +21,22 @@ debugger={
 }
 
 debugger_init={
-    "windbg": "",
-    "x64dbg": "",
-    "gdb": "",
-    "windbgx":""
+    'i386':{
+        'windbg':'',
+        'x64dbg':'',
+        'gdb':'',
+        "windbgx":""
+    },
+    'amd64':{
+        'windbg':'',
+        'x64dbg':'',
+        'gdb':'',
+        "windbgx":""
+    }
 }
 
 def init_var():
-    winpwn_init=os.environ['HOME']+'\\.winpwn'
+    winpwn_init=os.path.expanduser("~\\.winpwn") #+'\\.winpwn'
     if os.path.exists(winpwn_init):
         fd=open(winpwn_init,'r')
         js=Latin1_encode(''.join(fd.readlines()))

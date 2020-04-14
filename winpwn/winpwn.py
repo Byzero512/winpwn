@@ -8,7 +8,7 @@ import time
 import os
 from .win import winProcess
 from .context import context
-from .misc import parse,Latin1_encode,Latin1_decode,NOPIE,PIE
+from .misc import parse,Latin1_encode,Latin1_decode,NOPIE,PIE,pause
 import var
 
 class tube(object):
@@ -79,13 +79,27 @@ class tube(object):
     
     def recvuntil(self,delim,timeout=None):
         if timeout is None:
-            timeout=self.timeout
+            if self.timeout:
+                timeout=self.timeout
+            else:
+                timeout=context.timeout
+            # if delim=='choice: ' and context.devdebug is True:
+            #         print('timeout: ',timeout)
+            #         print('self.timeout: ',self.timeout)
+            #         print('context.timeout',context.timeout)
+            #         print('-------------------------')
         if not context.noout:
             parse.mark('recv')
         buf = ''
         st=time.time()
-        xt=0.0
+        xt=st
         while (len(buf)<len(delim) or buf[-len(delim):]!=delim):
+            # if delim=='choice: ' and context.devdebug is True:
+            #         print('timeout: ',timeout)
+            #         print('self.timeout: ',self.timeout)
+            #         print('context.timeout',context.timeout)
+            #         print('xt',xt)
+            #         pause()
             buf += self.recv(1, timeout=timeout-(xt-st),local_call=True)
             if var.ter is None:
                 xt=time.time()
@@ -99,9 +113,9 @@ class tube(object):
             else:
                 os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
             parse.mark('recved')
-            return buf
         else:
             raise(EOFError(parse.color("[Error]: Recvuntil error",'red')))
+        return buf
 
     def recvline(self,timeout=None,newline=None):
         if newline is None:

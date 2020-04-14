@@ -106,10 +106,7 @@ class STARTUPINFO(Structure):
 class winPipe():
     def __init__(self,bInheritHandle = 1):
         self.timeout=context.timeout
-        self.tick=context.tick
         self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe=self.create(bInheritHandle=bInheritHandle)
-        # if context.timeout:
-        #     self.timeout=context.timeout
 
     def create(self,bInheritHandle = 1):
         # set attr
@@ -140,18 +137,20 @@ class winPipe():
             x=windll.kernel32.PeekNamedPipe(self.hReadPipe,0,0,0,byref(byteAvail),0)
             return byteAvail.value
         if timeout is None:
-            timeout=self.timeout
+            if self.timeout:
+                timeout=self.timeout
+            else:
+                timeout=context.timeout
         x_time=0
         if count()<n:
             while(x_time<timeout and count()<n):
-                time.sleep(float(self.tick))
-                x_time+=self.tick
+                time.sleep(context.tick)
+                x_time+=context.tick
         cn=min(count(),n)
         beenRead=wintypes.DWORD()
         buf=create_string_buffer(cn)
         if cn>0:
             windll.kernel32.ReadFile(self.hReadPipe,buf,cn,byref(beenRead),None)
-        # return str
         return Latin1_decode(buf.raw)
 
     def write(self,buf=''):
@@ -166,12 +165,12 @@ class winPipe():
         return (self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe)
 
     def close(self):
+        # windll.kernel32.CloseHandle(self.child_hReadPipe)
+        # windll.kernel32.CloseHandle(self.child_hWritePipe)
         windll.kernel32.CloseHandle(self.hReadPipe)
         windll.kernel32.CloseHandle(self.hWritePipe)
 
-    def debug(self):
-        print("winPipe timeout: ",self.timeout)
-        print("winPipe tick: ",self.tick)
+
 
 class winProcess(object):
     def __init__(self,argv,pwd=None,flags=0):
@@ -250,7 +249,7 @@ class winProcess(object):
         addr=c_size_t(addr)
         handle=windll.kernel32.OpenProcess(PROCESS_VM_READ|PROCESS_VM_WRITE|PROCESS_VM_OPERATION,0,self.pid)
         oldprotect=wintypes.DWORD()
-        x=windll.kernel32.VirtualProtectEx(handle,n,PAGE_READWRITE,byref(oldprotect))
+        x=windll.kernel32.VirtualProtectEx(handle,addr,n,PAGE_READWRITE,byref(oldprotect))
         
         buf=create_string_buffer(n)
         
@@ -289,5 +288,3 @@ class winProcess(object):
         self.pipe.timeout=timeout
     # an property to set global timeout of the pipe
     timeout=property(get_timeout,set_timeout)
-    def debug(self):
-        print("winProcess timeout: ",self.timeout)

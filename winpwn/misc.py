@@ -24,7 +24,7 @@ def run_in_new_terminal(command, terminal = None, args = None):
         argv+=[command]          # [terminal,args,command]
     elif isinstance(command,(list,tuple)):
         argv+=list(command)
-    ter=subprocess.Popen(argv)
+    ter=subprocess.Popen(' '.join(argv))
     return ter
 
 def NOPIE(fpath=""):
@@ -126,6 +126,8 @@ def Latin1_decode(string):
 class parse():
     @classmethod
     def color(clx,content,color='purple'):
+        if context.nocolor:
+            return content
         c = {
             "black": 30,
             "red": 31,
@@ -155,7 +157,12 @@ class parse():
                 hex+=chex
                 printable+=pchar
             # lines.append("%04x  %-*s  %s\n" % (c, length*3, hex.ljust(52,' '), printable))
-            lines.append('\033[0;{}m{:04x}\033[0m  {}  {}\n'.format(35,c,clx.color(hex.ljust(52,' '),'yellow'),printable))
+            # lines.append('\033[0;{}m{:04x}\033[0m  {}  {}\n'.format(35,c,clx.color(hex.ljust(52,' '),'yellow'),printable))
+            # lines.append('{}')
+            lines.append(clx.color(
+                "{:04x}".format(c)) +
+                "  {}  {}\n".format(clx.color(hex.ljust(52,' '),'yellow'),printable)
+            )
         if not all:
             if len(lines)>=0x20:
                 lines=lines[0:8]+['......\n']+lines[-8:]
