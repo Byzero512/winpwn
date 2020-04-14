@@ -8,7 +8,8 @@ for CTF windows pwn and IAT/EAT hook
 
 ### install
 > use pip or pip3
-### 1. install with pip
+
+### install with pip
 <b>pip install winpwn </b>
 ### config for debug
 1. copy file [.winpwn](./.winpwn) to windows <b>HOMEDIR</b>
