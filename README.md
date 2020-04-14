@@ -4,7 +4,7 @@ for CTF windows pwn and IAT/EAT hook
 
 ### pre
 1. support python2 and python3
-2. for basic function, just use ctypes to invoke Windows API. 
+2. support windbg/windbgx/x64dbg/mingw-gdb
 
 ### install
 > use pip or pip3
@@ -62,13 +62,12 @@ for CTF windows pwn and IAT/EAT hook
 ### configure
 if you want to use debugger like gdb-peda, you need to deal with the deps yourself
 
-#### mingw-gdb
-1. [wibe](https://github.com/Byzero512/wibe) (gdb-peda like; just support python2)
-
-#### windbg
+#### windbgx/windbg
 1. pykd
 2. [bywin](https://github.com/Byzero512/debugger-scripts/tree/master/windbgx/bywin)
 
+#### mingw-gdb
+1. [wibe](https://github.com/Byzero512/wibe) (gdb-peda like; just support python2)
 
 ## photos
 
