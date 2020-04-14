@@ -8,11 +8,11 @@ for CTF windows pwn and IAT/EAT hook
 
 ### install
 > use pip or pip3
-1. install with pip
-   + <b>pip install winpwn </b>
-2. config for debug
-   + copy file (.winpwn)[https://github.com/Byzero512/winpwn/.winpwn] to windows <b>HOMEDIR</b>
-   + then configure it yourself
+### 1. install with pip
+<b>pip install winpwn </b>
+### config for debug
+1. copy file (.winpwn)[https://github.com/Byzero512/winpwn/.winpwn] to windows <b>HOMEDIR</b>
+2. then configure it yourself
 3. optional:
    + pip install pefile
    + pip install keystone
