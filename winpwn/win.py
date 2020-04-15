@@ -20,7 +20,7 @@ from ctypes.wintypes import HANDLE,LPVOID,LPSTR,DWORD,WORD,BOOL,BYTE
 from ctypes import POINTER,Structure
 
 from context import context
-from misc import parse,Latin1_encode,Latin1_decode
+from misc import Latin1_encode,Latin1_decode,color
 
 # some var to CreatePipe or CreateProcessA
 HANDLE_FLAG_INHERIT=1
@@ -129,7 +129,7 @@ class winPipe():
         if(rs1 and rs2 and rs3 and rs4):
             return (hReadPipe.value,hWritePipe.value,child_hReadPipe.value,child_hWritePipe.value)
         else:
-            raise(EOFError(parse.color("[-]: Create Pipe error",'red')))
+            raise(EOFError(color("[-]: Create Pipe error",'red')))
 
     def read(self,n,timeout=None):
         def count():
@@ -173,18 +173,16 @@ class winPipe():
 
 
 class winProcess(object):
-    def __init__(self,argv,pwd=None,flags=0):
-
+    def __init__(self,argv,cwd=None,flags=0):
         self.pipe=winPipe()
         self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe=self.pipe.getHandle()
         self.pid=0
         self.phandle=0
         self.tid=0
         self.thandle=0
-        self.create(argv,pwd,flags)
-
-    def create(self,argv,pwd=None,flags=None):
-        lpCurrentDirectory=pwd
+        self.create(argv,cwd,flags)
+    def create(self,argv,cwd=None,flags=None):
+        lpCurrentDirectory=cwd
         lpEnvironment=None
         dwCreationFlags=flags
         bInheritHandles=True
@@ -230,7 +228,7 @@ class winProcess(object):
             self.thandle=lpProcessInformation.hThread
             print("process runing, pid: {}".format(hex(self.pid)))
         except:
-            raise(EOFError(parse.color("[-]: Create process error",'red')))
+            raise(EOFError(color("[-]: Create process error",'red')))
 
     def read(self,n,timeout=None):
         return self.pipe.read(n,timeout=timeout)
@@ -281,10 +279,8 @@ class winProcess(object):
 
         return written.value
 
-    def get_timeout(self):
-        return self.pipe.timeout
+    # def get_timeout(self):
+    #     return self.pipe.timeout
     def set_timeout(self,timeout=None):
-        # if timeout is not None:
         self.pipe.timeout=timeout
-    # an property to set global timeout of the pipe
-    timeout=property(get_timeout,set_timeout)
+    timeout=property(None,set_timeout)
