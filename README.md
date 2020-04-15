@@ -1,4 +1,4 @@
-## winpwn: mini pwntools for Windows
+## winpwn: pwntools for Windows (mini)
 for CTF windows pwn and IAT/EAT hook
 
 
@@ -12,7 +12,7 @@ for CTF windows pwn and IAT/EAT hook
 ### install with pip
 <b>pip install winpwn </b>
 ### config for debug
-1. copy file [.winpwn](./.winpwn) to windows <b>HOMEDIR</b>
+1. copy file [.winpwn](https://github.com/Byzero512/winpwn/blob/master/.winpwn) to windows <b>HOMEDIR</b>
 2. then configure it yourself
 3. optional:
    + pip install pefile
@@ -70,7 +70,7 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 2. [bywin](https://github.com/Byzero512/debugger-scripts/tree/master/windbgx/bywin)
 
 #### mingw-gdb
-1. [wibe](https://github.com/Byzero512/wibe) (gdb-peda like; just support python2)
+1. [wibe](https://github.com/Byzero512/wibe)
 
 ## photos
 
