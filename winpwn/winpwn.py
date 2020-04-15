@@ -27,13 +27,20 @@ class tube(object):
     @timeout.setter
     def timeout(self,timeout):
         pass
-    def __showbuf(self,buf,is_show=True,is_send=False):
-        if is_show and not context.noout:
+    def __showbanner(self,is_send=False):
+        if not context.noout:
             if is_send:
                 markstr='Send'
             else:
                 markstr='Recv'
             print(color('[+]: '+markstr+'ing','green'))
+    def __showbuf(self,buf,is_send=False):
+        if not context.noout:
+            # if is_send:
+            #     markstr='Send'
+            # else:
+            #     markstr='Recv'
+            # print(color('[+]: '+markstr+'ing','green'))
             if context.log_level=='debug':
                 hexdump(buf)
             if buf.endswith(context.newline):
@@ -43,10 +50,10 @@ class tube(object):
             # print(color('[-]: '+markstr+'ed','green'))
              
     def send(self,buf):
-        # if not context.noout:
+        self.__showbanner(is_send=True)
         #     mark('send')
         rs=self.write(buf)
-        self.__showbuf(buf,is_show=True,is_send=True)
+        self.__showbuf(buf,is_send=True)
         return rs
     
     def sendline(self,buf,newline=None):
@@ -54,23 +61,26 @@ class tube(object):
             newline=context.newline
         return self.send(buf+newline)
 
-    def recv(self,n,timeout=None,local_call=False):
+    def recv(self,n,timeout=None):
         # try to read n bytes, no exception
+        self.__showbanner(is_send=False)
         buf=''
         buf=self.read(n, timeout)
-        self.__showbuf(buf,is_show=not local_call)
+        self.__showbuf(buf,is_send=False)
         return buf
 
-    def recvn(self,n,timeout=None,local_call=False):
+    def recvn(self,n,timeout=None):
         # must recv n bytes within timeout
+        self.__showbanner(is_send=False)
         buf=''
         buf = self.read(n, timeout)
         if len(buf) != n:
             raise(EOFError("Timeout when use recvn"))
-        self.__showbuf(buf,is_show=not local_call)
+        self.__showbuf(buf,is_send=False)
         return buf
     
     def recvuntil(self,delim,timeout=None):
+        self.__showbanner(is_send=False)
         if timeout is None:
             if self.timeout:
                 timeout=self.timeout
@@ -87,7 +97,7 @@ class tube(object):
                     break
         if not buf.endswith(delim):
             raise(EOFError(color("[Error]: Recvuntil error",'red')))
-        self.__showbuf(buf,is_show=True)
+        self.__showbuf(buf,is_send=False)
         return buf
 
     def recvline(self,timeout=None,newline=None):
@@ -96,8 +106,9 @@ class tube(object):
         return self.recvuntil(newline)
 
     def recvall(self,timeout=None):
+        self.__showbanner(is_send=False)
         buf=self.read(0x100000, timeout)
-        self.__showbuf(buf,is_show=True)
+        self.__showbuf(buf,is_send=False)
         return buf   
 
     # based on read/write
@@ -112,7 +123,7 @@ class tube(object):
                 while not go.is_set():
                     buf = self.read(0x10000,0.125,interactive=True)
                     if buf:
-                        self.__showbuf(buf,is_show=True,is_send=False)
+                        self.__showbuf(buf,is_send=False)
                         if not context.noout:
                             print(color('\n[+]: Interacting','green'))
                     go.wait(0.2)
