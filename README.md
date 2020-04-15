@@ -43,6 +43,7 @@ for CTF windows pwn and IAT/EAT hook
    + context.windbgx=None
    + content.gdb=None
    + context.x64dbg=None
+   + context.nocolor=None # if set, will print non-colorful output to terminal
    
 4. dbg: gdb(mingw gdb), windbg, x64dbg
    + windbgx.attach(p,script="bp 0x401000")
