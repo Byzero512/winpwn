@@ -6,15 +6,10 @@ for CTF windows pwn and IAT/EAT hook
 1. support python2 and python3
 2. support windbg/windbgx/x64dbg/mingw-gdb
 
-### install
-> use pip or pip3
-
-### install with pip
-<b>pip install winpwn </b>
-### config for debug
-1. copy file [.winpwn](https://github.com/Byzero512/winpwn/blob/master/.winpwn) to windows <b>HOMEDIR</b>
-2. then configure it yourself
-3. optional:
+### setup
+1. pip/pip3 install winpwn
+2. optional:
+   + for debug, copy file [.winpwn](https://github.com/Byzero512/winpwn/blob/master/.winpwn) to windows <b>HOMEDIR</b>, then configure it.
    + pip install pefile
    + pip install keystone
    + pip install capstone
@@ -45,20 +40,20 @@ for CTF windows pwn and IAT/EAT hook
    + context.x64dbg=None
    + context.nocolor=None # if set, will print non-colorful output to terminal
    
-4. dbg: gdb(mingw gdb), windbg, x64dbg
+4. dbg: windbgx, windbg, gdb, x64dbg
    + windbgx.attach(p,script="bp 0x401000")
    + windbg.attach(p,script="bp 0x401000")
    + gdb.attach(p, script="b *0x401000")
    + x64dbg.attach(p) #can not parse script file yet
 
-5. disable PIE: need "pip install pefile"
+5. disable PIE:
    + PIE(exe_fpath="")
    + NOPIE(exe_fpath="")
-6. asm/disasm, need "pip install keystone/capstone"
+6. asm/disasm:
    + asm("push ebp")
    + disasm("\x55")
    
-7. winfile(fpath="./main.exe"), need "pip install pefile"
+7. winfile(fpath="./main.exe"):
    + winfile.symbols["CreateProcessA"] # return symbol's IAT/EAT offset of CreateProcessA by image base
 ```
 
