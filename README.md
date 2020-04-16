@@ -8,8 +8,8 @@ for CTF windows pwn and IAT/EAT hook
 
 ### setup
 1. pip/pip3 install winpwn
-2. copy file [.winpwn](https://github.com/Byzero512/winpwn/blob/master/.winpwn) to windows <b>HOMEDIR</b>, then configure it.
-3. optional:
+2. optional:
+   + for debug, copy file [.winpwn](https://github.com/Byzero512/winpwn/blob/master/.winpwn) to windows <b>HOMEDIR</b>, then configure it.
    + pip install pefile
    + pip install keystone
    + pip install capstone
