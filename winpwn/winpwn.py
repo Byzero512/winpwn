@@ -186,7 +186,7 @@ class remote(tube):
             return True
         return False
     @tube.timeout.setter
-    def set_timeout(self,timeout):
+    def timeout(self,timeout):
         self._timeout=timeout
         self.sock.settimeout(self._timeout)
 
