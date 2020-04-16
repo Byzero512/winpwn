@@ -6,11 +6,8 @@ for CTF windows pwn and IAT/EAT hook
 1. support python2 and python3
 2. support windbg/windbgx/x64dbg/mingw-gdb
 
-### install
-> use pip or pip3
-
 ### setup
-1. pip install winpwn
+1. pip/pip3 install winpwn
 2. copy file [.winpwn](https://github.com/Byzero512/winpwn/blob/master/.winpwn) to windows <b>HOMEDIR</b>, then configure it.
 3. optional:
    + pip install pefile
