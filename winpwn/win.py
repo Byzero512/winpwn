@@ -278,9 +278,3 @@ class winProcess(object):
         windll.kernel32.CloseHandle(handle)
 
         return written.value
-
-    # def get_timeout(self):
-    #     return self.pipe.timeout
-    def set_timeout(self,timeout=None):
-        self.pipe.timeout=timeout
-    timeout=property(None,set_timeout)
