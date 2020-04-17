@@ -11,7 +11,7 @@ import misc
 class gdb():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        print(misc.color('[+]: attaching'))
+        misc.showbanner('attaching','purple','wait')
         if context.gdb is None:
             gdbPath=debugger[context.arch]['gdb']
         else:
@@ -51,7 +51,6 @@ class gdb():
         while(os.path.exists(pre_tmp.name)):    # wait_for_debugger
             pass
         target.debugger=ter
-        # misc.mark('attached')
         return ter.pid
     @classmethod
     def debug():
@@ -61,7 +60,7 @@ class windbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
         
-        print(misc.color('[+]: attaching'))
+        misc.showbanner('attaching','purple','wait')
         if context.windbg is None:
             windbgPath=debugger[context.arch]['windbg']
         else:
@@ -86,12 +85,11 @@ class windbg():
         while(os.path.exists(tmp.name)):    # wait_for_debugger
             pass
         target.debugger=ter
-        # misc.mark('attached')
         return ter.pid
 
     @classmethod
     def com(clx,com,script="",baudrate=115200):
-        print(misc.color('[+]: attaching'))
+        misc.showbanner('attaching','purple','wait')
         if context.windbg is None:
             windbgPath=debugger[context.arch]['windbg']
         else:
@@ -121,7 +119,7 @@ class windbg():
 class windbgx():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        print(misc.color('[+]: attaching'))
+        misc.showbanner('attaching','purple','wait')
         if context.windbgx is None:
             windbgxPath=debugger[context.arch]['windbgx']
         else:
@@ -152,7 +150,7 @@ class windbgx():
 
     @classmethod
     def com(clx,com,script="",baudrate=115200):
-        print(misc.color('[+]: attaching'))
+        misc.showbanner('attaching','purple','wait')
         if context.windbgx is None:
             windbgxPath=debugger[context.arch]['windbgx']
         else:
@@ -182,6 +180,7 @@ class windbgx():
 class x64dbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
+        misc.showbanner('attaching','purple','wait')
         if context.x64dbg is None:
             x64dbgPath=debugger[context.arch]['x64dbg']
         else:
@@ -194,7 +193,7 @@ class x64dbg():
         load_x64dbg.append(str(target.pid))
         ter=subprocess.Popen(load_x64dbg)
         target.debugger=ter
-        print(misc.color("[=]: pausing\n\twaiting for debugger",'purple'))
+        misc.pause('\twaiting for debugger')
         sys.stdin.readline()
         return ter.pid         
 

@@ -4,6 +4,7 @@ import subprocess
 import struct
 import time
 import sys
+import os
 
 from context import context
 
@@ -41,10 +42,11 @@ def PIE(fpath=""):
     pe_fp.OPTIONAL_HEADER.CheckSum = pe_fp.generate_checksum()
     pe_fp.write(fpath)
 
-def pause():
-    print(parse.color("\n[=]: pausing",'purple'))
+def pause(string=None):
+    print(color("\n[=]: pausing",'purple'))
+    if string is not None:
+        print(color(string,'purple'))
     sys.stdin.readline()
-
 def sleep(n):
     time.sleep(n)
 
@@ -53,37 +55,29 @@ def p64(i):
     if sys.version_info[0]==3:
         return Latin1_decode(l)
     return l
-
 def u64(s):
     return struct.unpack('<Q', Latin1_encode(s))[0]
-
 def p32(i):
     l=struct.pack('<I', i)
     if sys.version_info[0]==3:
         return Latin1_decode(l)
     return l
-
 def u32(s):
     return struct.unpack('<I', Latin1_encode(s))[0]
-    
 def p16(i):
     l=struct.pack('<H', i)
     if sys.version_info[0]==3:
         return Latin1_decode(l)
     return l
-
 def u16(s):
     return struct.unpack('<H', Latin1_encode(s))[0]
-
 def p8(i):
     l=struct.pack('<B', i)
     if sys.version_info[0]==3:
         return Latin1_decode(l)
     return l
-
 def u8(s):
     return struct.unpack('<B', Latin1_encode(s))[0]
-
 
 def Latin1_encode(string):
     if sys.version_info[0]==3:
@@ -132,20 +126,20 @@ def hexdump(src,length=16,all=True):
         if len(lines)>=0x20:
             lines=lines[0:8]+['......\n']+lines[-8:]
     print(''.join(lines).strip())
-
-def log(*args):
-    print(color("[+]: log",'purple'))
-    line1=''
-    j=0
-    for i in args:
-        if j!=0 and j%2==0:
-            line1+='\n'
-        if isinstance(i,int):
-            line1+=hex(i).strip('L')+'\t'
-        elif isinstance(i,str):
-            line1+=i+'\t'
-        elif isinstance(i,long):
-            line1+=hex(i).strip('L')+'\t'
-        j+=1
-    print(color(line1,'yellow'))
-    print(color('[-]: logged','purple'))
+def showbanner(markstr,colorstr='green',typestr='start'):
+    if not context.noout:
+        if typestr[0]=='s':
+            typestr='[+]'
+        elif typestr[0]=='e':
+            typestr='[-]'
+        else:
+            typestr='[=]'
+        print(color('\n'+typestr+': '+markstr,colorstr))
+def showbuf(buf):
+    if not context.noout:
+        if context.log_level=='debug':
+            hexdump(buf)
+        if buf.endswith(context.newline):
+            os.write(sys.stdout.fileno(), Latin1_encode(buf))
+        else:
+            os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))

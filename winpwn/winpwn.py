@@ -8,7 +8,7 @@ import time
 import os
 from .win import winProcess
 from .context import context
-from .misc import Latin1_encode,Latin1_decode,NOPIE,PIE,color,hexdump
+from .misc import Latin1_encode,Latin1_decode,NOPIE,PIE,color,showbanner,showbuf
 
 class tube(object):
     def __init__(self):
@@ -26,34 +26,11 @@ class tube(object):
         return self._timeout
     @timeout.setter
     def timeout(self,timeout):
-        pass
-    def __showbanner(self,is_send=False):
-        if not context.noout:
-            if is_send:
-                markstr='Send'
-            else:
-                markstr='Recv'
-            print(color('[+]: '+markstr+'ing','green'))
-    def __showbuf(self,buf,is_send=False):
-        if not context.noout:
-            # if is_send:
-            #     markstr='Send'
-            # else:
-            #     markstr='Recv'
-            # print(color('[+]: '+markstr+'ing','green'))
-            if context.log_level=='debug':
-                hexdump(buf)
-            if buf.endswith(context.newline):
-                os.write(sys.stdout.fileno(), Latin1_encode(buf))
-            else:
-                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
-            # print(color('[-]: '+markstr+'ed','green'))
-             
+        pass             
     def send(self,buf):
-        self.__showbanner(is_send=True)
-        #     mark('send')
+        showbanner('Send')
         rs=self.write(buf)
-        self.__showbuf(buf,is_send=True)
+        showbuf(buf)
         return rs
     
     def sendline(self,buf,newline=None):
@@ -63,24 +40,22 @@ class tube(object):
 
     def recv(self,n,timeout=None):
         # try to read n bytes, no exception
-        self.__showbanner(is_send=False)
-        buf=''
+        showbanner('Recv')
         buf=self.read(n, timeout)
-        self.__showbuf(buf,is_send=False)
+        showbuf(buf)
         return buf
 
     def recvn(self,n,timeout=None):
         # must recv n bytes within timeout
-        self.__showbanner(is_send=False)
-        buf=''
+        showbanner("Recv")
         buf = self.read(n, timeout)
         if len(buf) != n:
             raise(EOFError("Timeout when use recvn"))
-        self.__showbuf(buf,is_send=False)
+        showbuf(buf)
         return buf
     
     def recvuntil(self,delim,timeout=None):
-        self.__showbanner(is_send=False)
+        showbanner("Recv")
         if timeout is None:
             if self.timeout:
                 timeout=self.timeout
@@ -97,7 +72,7 @@ class tube(object):
                     break
         if not buf.endswith(delim):
             raise(EOFError(color("[Error]: Recvuntil error",'red')))
-        self.__showbuf(buf,is_send=False)
+        showbuf(buf)
         return buf
 
     def recvline(self,timeout=None,newline=None):
@@ -106,16 +81,15 @@ class tube(object):
         return self.recvuntil(newline)
 
     def recvall(self,timeout=None):
-        self.__showbanner(is_send=False)
+        showbanner('Recv')
         buf=self.read(0x100000, timeout)
-        self.__showbuf(buf,is_send=False)
+        showbuf(buf)
         return buf   
 
     # based on read/write
     def interactive(self):
         # it exited, contrl+C, timeout
-        if not context.noout:
-            print(color('\n[+]: Interacting','green'))
+        showbanner('Interacting')
         go = threading.Event()
         go.clear()
         def recv_thread():
@@ -123,9 +97,8 @@ class tube(object):
                 while not go.is_set():
                     buf = self.read(0x10000,0.125,interactive=True)
                     if buf:
-                        self.__showbuf(buf,is_send=False)
-                        if not context.noout:
-                            print(color('\n[+]: Interacting','green'))
+                        showbuf(buf)
+                        showbanner('Interacting')
                     go.wait(0.2)
             except KeyboardInterrupt:
                 go.set()
@@ -154,9 +127,9 @@ class tube(object):
             t.join(timeout = 0.1)
 
 class remote(tube):
-    def __init__(self, ip, port, family = socket.AF_INET, type = socket.SOCK_STREAM):
+    def __init__(self, ip, port, family = socket.AF_INET, socktype = socket.SOCK_STREAM):
         tube.__init__(self)
-        self.sock = socket.socket(family, type)
+        self.sock = socket.socket(family, socktype)
         self.ip = ip
         self.port = port
         self._is_exit=False
