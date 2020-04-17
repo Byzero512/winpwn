@@ -55,6 +55,11 @@ for CTF windows pwn and IAT/EAT hook
    
 7. winfile(fpath="./main.exe"):
    + winfile.symbols["CreateProcessA"] # return symbol's IAT/EAT offset of CreateProcessA by image base
+8. wincs(ip,port)
+   + wincs(ip=None,port=512): run a server to asm/disasm in remote machine for client where no keystone/capstone
+   + wincs(ip='123.123.123.123',512): create a client to connet to server
+      + wincs().asm(asmcode='push ebp')
+      + wincs.disasm(machinecpde='\x55')
 ```
 
 ### configure
