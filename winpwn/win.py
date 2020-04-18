@@ -19,8 +19,8 @@ from ctypes import windll,byref,sizeof,wintypes,create_string_buffer,GetLastErro
 from ctypes.wintypes import HANDLE,LPVOID,LPSTR,DWORD,WORD,BOOL,BYTE
 from ctypes import POINTER,Structure
 
-from context import context
-from misc import Latin1_encode,Latin1_decode,color
+from .context import context
+from .misc import Latin1_encode,Latin1_decode,color,showbanner
 
 # some var to CreatePipe or CreateProcessA
 HANDLE_FLAG_INHERIT=1
@@ -154,6 +154,7 @@ class winPipe():
         return Latin1_decode(buf.raw)
 
     def write(self,buf=''):
+        buf=Latin1_encode(buf)
         length=len(buf)
         written=wintypes.DWORD()
         x=windll.kernel32.WriteFile(self.hWritePipe,buf,length,byref(written),None)
@@ -169,8 +170,6 @@ class winPipe():
         # windll.kernel32.CloseHandle(self.child_hWritePipe)
         windll.kernel32.CloseHandle(self.hReadPipe)
         windll.kernel32.CloseHandle(self.hWritePipe)
-
-
 
 class winProcess(object):
     def __init__(self,argv,cwd=None,flags=0):
@@ -208,7 +207,7 @@ class winProcess(object):
             lpApplicationName = Latin1_encode(argv)
         else:
             lpCommandLine = Latin1_encode((" ".join([str(a) for a in argv])))
-        try:    
+        try: 
             bs=windll.kernel32.CreateProcessA(
                 lpApplicationName,          
                 lpCommandLine,              
@@ -221,19 +220,18 @@ class winProcess(object):
                 byref(StartupInfo),         
                 byref(lpProcessInformation)
             )
-            # windll.kernel32.CloseHandle(lpProcessInformation.hThread)
             self.pid=lpProcessInformation.dwProcessId
             self.phandle=lpProcessInformation.hProcess
             self.tid=lpProcessInformation.dwThreadId
             self.thandle=lpProcessInformation.hThread
-            print("process runing, pid: {}".format(hex(self.pid)))
+            showbanner('Create process success #pid 0x{:x}'.format(self.pid))
         except:
             raise(EOFError(color("[-]: Create process error",'red')))
 
     def read(self,n,timeout=None):
         return self.pipe.read(n,timeout=timeout)
     def write(self,buf):
-        return self.pipe.write(Latin1_encode(buf))
+        return self.pipe.write(buf)
     def is_exit(self):
         x=wintypes.DWORD()
         n=windll.kernel32.GetExitCodeProcess(self.phandle,byref(x))

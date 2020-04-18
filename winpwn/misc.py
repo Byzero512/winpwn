@@ -6,7 +6,7 @@ import time
 import sys
 import os
 
-from context import context
+from .context import context
 
 def run_in_new_terminal(command, terminal = None, args = None):
     if terminal is None:
@@ -126,17 +126,15 @@ def hexdump(src,length=16,all=True):
         if len(lines)>=0x20:
             lines=lines[0:8]+['......\n']+lines[-8:]
     print(''.join(lines).strip())
-def showbanner(markstr,colorstr='green',typestr='start'):
-    if not context.noout:
-        if typestr[0]=='s':
-            typestr='[+]'
-        elif typestr[0]=='e':
-            typestr='[-]'
-        else:
-            typestr='[=]'
+def showbanner(markstr,colorstr='green',typestr='[+]',is_noout=None):
+    if is_noout is None:
+        is_noout=context.noout
+    if not is_noout:
         print(color('\n'+typestr+': '+markstr,colorstr))
-def showbuf(buf):
-    if not context.noout:
+def showbuf(buf,is_noout=None):
+    if is_noout is None:
+        is_noout=context.noout
+    if not is_noout:
         if context.log_level=='debug':
             hexdump(buf)
         if buf.endswith(context.newline):

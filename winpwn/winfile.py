@@ -1,4 +1,5 @@
 from .misc import Latin1_decode
+
 class winfile(object):
     def __init__(self,fpath=""):
         self._address=0

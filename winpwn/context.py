@@ -2,7 +2,6 @@
 class context():
     # init
     terminal=[]
-
     # basic
     arch='i386'
     endian='little'

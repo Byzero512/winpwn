@@ -6,12 +6,12 @@ import subprocess
 
 from .context import context
 from .winpwn import process
-import misc
+from .misc import showbanner,Latin1_encode,sleep,run_in_new_terminal,pause
 
 class gdb():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        misc.showbanner('attaching','purple','wait')
+        showbanner('attaching','purple','[=]')
         if context.gdb is None:
             gdbPath=debugger[context.arch]['gdb']
         else:
@@ -32,13 +32,13 @@ class gdb():
 
         pre = context.dbginit+'\n'+setInfo(sysroot)+debugger_init[context.arch]['gdb']
         pre_tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        pre_tmp.write(misc.Latin1_encode(pre))
+        pre_tmp.write(Latin1_encode(pre))
         pre_tmp.flush()
         pre_tmp.close()
 
         script=(script+'\n' or '')
         script_tmp = tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        script_tmp.write(misc.Latin1_encode(script))
+        script_tmp.write(Latin1_encode(script))
         script_tmp.flush()
         script_tmp.close()
         
@@ -47,7 +47,7 @@ class gdb():
         load_Dbg+=' -ex {}'.format('"shell del {}"'.format(script_tmp.name))
         load_Dbg+=' -ex {}'.format('"shell del {}"'.format(pre_tmp.name))
         cmd=[load_Dbg]
-        ter=misc.run_in_new_terminal(cmd)
+        ter=run_in_new_terminal(cmd)
         while(os.path.exists(pre_tmp.name)):    # wait_for_debugger
             pass
         target.debugger=ter
@@ -60,7 +60,7 @@ class windbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
         
-        misc.showbanner('attaching','purple','wait')
+        showbanner('attaching','purple','[=]')
         if context.windbg is None:
             windbgPath=debugger[context.arch]['windbg']
         else:
@@ -74,7 +74,7 @@ class windbg():
 
         script=context.dbginit+'\n'+debugger_init[context.arch]['windbg']+'\n'+script+'\n'
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        tmp.write(misc.Latin1_encode(script))
+        tmp.write(Latin1_encode(script))
         tmp.flush()
         tmp.close()
         load_windbg += ['-c']             # exec command
@@ -89,7 +89,7 @@ class windbg():
 
     @classmethod
     def com(clx,com,script="",baudrate=115200):
-        misc.showbanner('attaching','purple','wait')
+        showbanner('attaching','purple','[=]')
         if context.windbg is None:
             windbgPath=debugger[context.arch]['windbg']
         else:
@@ -99,18 +99,18 @@ class windbg():
 
         script=context.dbginit+'\n'+debugger_init[context.arch]['windbg']+'\n'+script+'\n'
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        tmp.write(misc.Latin1_encode(script))
+        tmp.write(Latin1_encode(script))
         tmp.flush()
         tmp.close()
         load_windbg += ['-c']             # exec command
         load_windbg+=['"$$><{}'.format(tmp.name)+';.shell -x del {}"'.format(tmp.name)]
-        # ter=subprocess.Popen(misc.Latin1_encode(' '.join(load_windbg)))
+        # ter=subprocess.Popen(Latin1_encode(' '.join(load_windbg)))
         ter=subprocess.Popen(' '.join(load_windbg))
         while(os.path.exists(tmp.name)):    # wait_for_debugger
-            misc.sleep(0.05)
+            sleep(0.05)
             # pass
         # target.debugger=ter
-        # misc.mark('attached')
+        # mark('attached')
         return ter.pid
     @classmethod
     def net(clx):
@@ -119,7 +119,7 @@ class windbg():
 class windbgx():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        misc.showbanner('attaching','purple','wait')
+        showbanner('attaching','purple','[=]')
         if context.windbgx is None:
             windbgxPath=debugger[context.arch]['windbgx']
         else:
@@ -134,7 +134,7 @@ class windbgx():
         script=context.dbginit+'\n'+debugger_init[context.arch]['windbgx']+'\n'+script+'\n'
 
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        tmp.write(misc.Latin1_encode(script))
+        tmp.write(Latin1_encode(script))
         tmp.flush()
         tmp.close()
         load_windbg += ['-c']             # exec command
@@ -145,12 +145,12 @@ class windbgx():
         while(os.path.exists(tmp.name)):    # wait_for_debugger
             pass
         target.debugger=ter
-        # misc.mark('attached')
+        # mark('attached')
         return ter.pid
 
     @classmethod
     def com(clx,com,script="",baudrate=115200):
-        misc.showbanner('attaching','purple','wait')
+        showbanner('attaching','purple','[=]')
         if context.windbgx is None:
             windbgxPath=debugger[context.arch]['windbgx']
         else:
@@ -160,18 +160,18 @@ class windbgx():
 
         script=context.dbginit+'\n'+debugger_init[context.arch]['windbgx']+'\n'+script+'\n'
         tmp=tempfile.NamedTemporaryFile(prefix = 'winpwn_', suffix = '.dbg',delete=False)
-        tmp.write(misc.Latin1_encode(script))
+        tmp.write(Latin1_encode(script))
         tmp.flush()
         tmp.close()
         load_windbg += ['-c']             # exec command
         load_windbg+=['"$$><{}'.format(tmp.name)+';.shell -x del {}"'.format(tmp.name)]
-        # ter=subprocess.Popen(misc.Latin1_encode(' '.join(load_windbg)))
+        # ter=subprocess.Popen(Latin1_encode(' '.join(load_windbg)))
         ter=subprocess.Popen(' '.join(load_windbg))
         while(os.path.exists(tmp.name)):    # wait_for_debugger
-            misc.sleep(0.05)
+            sleep(0.05)
             # pass
         # target.debugger=ter
-        # misc.mark('attached')
+        # mark('attached')
         return ter.pid
     @classmethod
     def net(clx):
@@ -180,7 +180,7 @@ class windbgx():
 class x64dbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
-        misc.showbanner('attaching','purple','wait')
+        showbanner('attaching','purple','[=]')
         if context.x64dbg is None:
             x64dbgPath=debugger[context.arch]['x64dbg']
         else:
@@ -193,7 +193,7 @@ class x64dbg():
         load_x64dbg.append(str(target.pid))
         ter=subprocess.Popen(load_x64dbg)
         target.debugger=ter
-        misc.pause('\twaiting for debugger')
+        pause('\twaiting for debugger')
         sys.stdin.readline()
         return ter.pid         
 
@@ -240,7 +240,7 @@ def init_debugger():
     winpwn_init=os.path.expanduser("~\\.winpwn")
     if os.path.exists(winpwn_init):
         fd=open(winpwn_init,'r')
-        js=misc.Latin1_encode(''.join(fd.readlines()))
+        js=Latin1_encode(''.join(fd.readlines()))
         x=json.loads(js)
         dbg=x['debugger']
         dbg_init=x['debugger_init']

@@ -6,6 +6,7 @@ import sys
 import socket
 import time
 import os
+
 from .win import winProcess
 from .context import context
 from .misc import Latin1_encode,Latin1_decode,NOPIE,PIE,color,showbanner,showbuf
@@ -15,7 +16,7 @@ class tube(object):
         self._timeout=context.timeout
         self.debugger=None
         
-    def read(self,n,timeout=None):
+    def read(self,n,timeout=None,interactive=False):
         pass
     def write(self,buf):
         pass
@@ -50,7 +51,7 @@ class tube(object):
         showbanner("Recv")
         buf = self.read(n, timeout)
         if len(buf) != n:
-            raise(EOFError("Timeout when use recvn"))
+            raise(EOFError(color("[-]: Timeout when use recvn",'red')))
         showbuf(buf)
         return buf
     
@@ -71,7 +72,7 @@ class tube(object):
                 if (xt-st)>=timeout:
                     break
         if not buf.endswith(delim):
-            raise(EOFError(color("[Error]: Recvuntil error",'red')))
+            raise(EOFError(color("[-]: Recvuntil error",'red')))
         showbuf(buf)
         return buf
 
@@ -89,7 +90,7 @@ class tube(object):
     # based on read/write
     def interactive(self):
         # it exited, contrl+C, timeout
-        showbanner('Interacting')
+        showbanner('Interacting',is_noout=False)
         go = threading.Event()
         go.clear()
         def recv_thread():
@@ -97,12 +98,12 @@ class tube(object):
                 while not go.is_set():
                     buf = self.read(0x10000,0.125,interactive=True)
                     if buf:
-                        showbuf(buf)
-                        showbanner('Interacting')
+                        showbuf(buf,is_noout=False)
+                        showbanner('Interacting',is_noout=False)
                     go.wait(0.2)
             except KeyboardInterrupt:
                 go.set()
-                print(color('[pwn-EOF]: Exited','red'))
+                print(color('[-]: Exited','red'))
         t = threading.Thread(target = recv_thread)
         t.daemon = True
         t.start()
@@ -115,14 +116,14 @@ class tube(object):
                         time.sleep(0.2) # wait for time to read output
                     buf = sys.stdin.readline()
                     if buf:
-                        self.write(buf)
-                except:     # exited
+                        self.write(buf)           # remote.write() may cause exception
+                except:
                     go.set()
-                    print(color('[pwn-EOF]: Exited','red'))
+                    print(color('[-]: Exited','red'))
                     break
         except KeyboardInterrupt: # control+C
             go.set()
-            print(color('[pwn-EOF]: Exited','red'))
+            print(color('[-]: Exited','red'))
         while t.is_alive():
             t.join(timeout = 0.1)
 
@@ -130,25 +131,28 @@ class remote(tube):
     def __init__(self, ip, port, family = socket.AF_INET, socktype = socket.SOCK_STREAM):
         tube.__init__(self)
         self.sock = socket.socket(family, socktype)
-        self.ip = ip
-        self.port = port
+        # self.ip = ip
+        # self.port = port
         self._is_exit=False
         try:
-            self.sock.connect((ip, port))
+            showbanner("Connecting to ({},{})".format(ip,port))
             self.sock.settimeout(self.timeout)
+            self.sock.connect((ip, port))
         except:
-            raise(EOFError("Connect failed"))
+            raise(EOFError(color("[-]: Connect to ({},{}) failed".format(ip,port),'red')))
     def read(self,n,timeout=None,interactive=False):
         if timeout is not None:
             self.sock.settimeout(timeout)
         buf=b''
         try:
-            buf=self.sock.recv(n) # ignore Exception
+            buf=self.sock.recv(n) # ignore timeout error
+        except KeyboardInterrupt:
+            self.close()
+            raise(EOFError(color("[-]: Exited by CTRL+C",'red')))
         except:
             pass
         self.sock.settimeout(self.timeout)
         return Latin1_decode(buf)
-
     def write(self,buf):
         return self.sock.send(Latin1_encode(buf))
     def close(self):
@@ -181,11 +185,15 @@ class process(tube):
         self.pid=self.Process.pid
     def read(self,n,timeout=None,interactive=False):
         buf=''
-        if self.debugger is not None and interactive is False:
-            while(len(buf)!=n):
-                buf+=self.Process.read(n-len(buf),timeout)
-        else:
-            buf=self.Process.read(n, timeout)
+        try:
+            if self.debugger is not None and interactive is False:
+                while(len(buf)!=n):
+                    buf+=self.Process.read(n-len(buf),timeout)
+            else:
+                buf=self.Process.read(n, timeout)
+        except KeyboardInterrupt:
+            self.close()
+            raise(EOFError(color("[-]: Exited by CTRL+C",'red')))       
         return buf
     def write(self, buf):
         return self.Process.write(buf)

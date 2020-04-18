@@ -5,9 +5,9 @@ import sys
 cwd = os.path.dirname(__file__)
 sys.path=[cwd]+sys.path[1:]
 
+from .context import context
 from .winpwn import process,remote
 from .dbg import gdb,windbg,x64dbg,windbgx,init_debugger
-from .context import context
 from .misc import p8,p16,p32,p64,u8,u16,u32,u64,pause,sleep,NOPIE,PIE,Latin1_encode,Latin1_decode,color,hexdump
 from .asm import asm,disasm
 from .winfile import winfile
