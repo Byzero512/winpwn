@@ -74,7 +74,7 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 ## photos
 
-### windbg
+### windbgx/windbg
 
 ![windbgx](./img/windbgx.png)
 
