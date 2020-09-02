@@ -59,7 +59,7 @@ for CTF windows pwn and IAT/EAT hook
    + wincs(ip=None,port=512): run a server to asm/disasm in remote machine for client where does not install keystone/capstone
    + wincs(ip='123.123.123.123',512): create a client to connet to server
       + wincs.asm(asmcode='push ebp')
-      + wincs.disasm(machinecpde='\x55')
+      + wincs.disasm(machinecode='\x55')
 ```
 
 ### configure
