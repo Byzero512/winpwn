@@ -67,10 +67,10 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 
 #### windbgx/windbg
 1. [pykd](https://githomelab.ru/pykd/pykd)
-2. [bywin](https://github.com/Byzero512/debugger-scripts/tree/master/windbgx/bywin)
+2. [bywin](https://github.com/Byzero512/peda-windows/tree/master/windbg)
 
 #### mingw-gdb
-1. [wibe](https://github.com/Byzero512/wibe)
+1. [wibe](https://github.com/Byzero512/peda-windows/tree/master/mingw-gdb/wibe)
 
 ## photos
 
