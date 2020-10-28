@@ -1,4 +1,4 @@
-## winpwn: pwntools for Windows (mini)
+## winpwn: pwntools for windows
 for CTF windows pwn and IAT/EAT hook
 
 
