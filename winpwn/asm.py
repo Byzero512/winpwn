@@ -2,6 +2,14 @@ from .context import context
 from .misc import Latin1_encode,Latin1_decode
 
 def disasm(machine_code,addr=0,arch=None):
+    """
+    Disassemble a machine code.
+
+    Args:
+        machine_code: (str): write your description
+        addr: (str): write your description
+        arch: (array): write your description
+    """
     import capstone
     machine_code=Latin1_encode(machine_code)
     if arch is None:
@@ -16,6 +24,14 @@ def disasm(machine_code,addr=0,arch=None):
     return Latin1_decode(Latin1_encode(l.strip('\n')))
 
 def asm(asm_code,addr=0,arch=None):
+    """
+    Returns the code ascii.
+
+    Args:
+        asm_code: (str): write your description
+        addr: (str): write your description
+        arch: (str): write your description
+    """
     import keystone
     asm_code=Latin1_encode(asm_code)
     if arch is None:

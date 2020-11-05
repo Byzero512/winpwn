@@ -11,6 +11,15 @@ from .misc import showbanner,Latin1_encode,sleep,run_in_new_terminal,pause
 class gdb():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
+        """
+        Attach a script to the given target
+
+        Args:
+            clx: (todo): write your description
+            target: (todo): write your description
+            script: (str): write your description
+            sysroot: (todo): write your description
+        """
         showbanner('attaching','purple','[=]')
         if context.gdb is None:
             gdbPath=debugger[context.arch]['gdb']
@@ -19,6 +28,12 @@ class gdb():
         
         load_Dbg=gdbPath+' -p'+' {}'.format(target.pid)+' -q'
         def setInfo(sysroot=None):
+            """
+            Set the system info
+
+            Args:
+                sysroot: (todo): write your description
+            """
             Info=''
             if context.arch=='amd64':
                 Info+='set architecture i386:x86-64\n'
@@ -54,11 +69,25 @@ class gdb():
         return ter.pid
     @classmethod
     def debug():
+        """
+        Returns a debug message.
+
+        Args:
+        """
         pass
 
 class windbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
+        """
+        Attach a script to a pty
+
+        Args:
+            clx: (todo): write your description
+            target: (todo): write your description
+            script: (str): write your description
+            sysroot: (todo): write your description
+        """
         
         showbanner('attaching','purple','[=]')
         if context.windbg is None:
@@ -89,6 +118,15 @@ class windbg():
 
     @classmethod
     def com(clx,com,script="",baudrate=115200):
+        """
+        Compose a string containing the script
+
+        Args:
+            clx: (todo): write your description
+            com: (todo): write your description
+            script: (str): write your description
+            baudrate: (todo): write your description
+        """
         showbanner('attaching','purple','[=]')
         if context.windbg is None:
             windbgPath=debugger[context.arch]['windbg']
@@ -114,11 +152,26 @@ class windbg():
         return ter.pid
     @classmethod
     def net(clx):
+        """
+        Net network interface.
+
+        Args:
+            clx: (todo): write your description
+        """
         pass
 
 class windbgx():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
+        """
+        Attach a script to a pty
+
+        Args:
+            clx: (todo): write your description
+            target: (todo): write your description
+            script: (str): write your description
+            sysroot: (todo): write your description
+        """
         showbanner('attaching','purple','[=]')
         if context.windbgx is None:
             windbgxPath=debugger[context.arch]['windbgx']
@@ -150,6 +203,15 @@ class windbgx():
 
     @classmethod
     def com(clx,com,script="",baudrate=115200):
+        """
+        Compose a string containing the script
+
+        Args:
+            clx: (todo): write your description
+            com: (todo): write your description
+            script: (str): write your description
+            baudrate: (todo): write your description
+        """
         showbanner('attaching','purple','[=]')
         if context.windbgx is None:
             windbgxPath=debugger[context.arch]['windbgx']
@@ -175,11 +237,26 @@ class windbgx():
         return ter.pid
     @classmethod
     def net(clx):
+        """
+        Net network interface.
+
+        Args:
+            clx: (todo): write your description
+        """
         pass
 
 class x64dbg():
     @classmethod
     def attach(clx,target,script="",sysroot=None):
+        """
+        Create a new process.
+
+        Args:
+            clx: (todo): write your description
+            target: (todo): write your description
+            script: (str): write your description
+            sysroot: (todo): write your description
+        """
         showbanner('attaching','purple','[=]')
         if context.x64dbg is None:
             x64dbgPath=debugger[context.arch]['x64dbg']
@@ -199,6 +276,15 @@ class x64dbg():
 
     @classmethod
     def debug(clx,target,script="",sysroot=None):
+        """
+        Log a debug message.
+
+        Args:
+            clx: (todo): write your description
+            target: (str): write your description
+            script: (str): write your description
+            sysroot: (todo): write your description
+        """
         pass
 
 
@@ -236,6 +322,11 @@ debugger_init={
 }
 
 def init_debugger():
+    """
+    Initialize debug information.
+
+    Args:
+    """
     import json
     winpwn_init=os.path.expanduser("~\\.winpwn")
     if os.path.exists(winpwn_init):
