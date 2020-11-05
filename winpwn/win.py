@@ -105,10 +105,24 @@ class STARTUPINFO(Structure):
 
 class winPipe():
     def __init__(self,bInheritHandle = 1):
+        """
+        Initialize a new child.
+
+        Args:
+            self: (todo): write your description
+            bInheritHandle: (todo): write your description
+        """
         self.timeout=context.timeout
         self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe=self.create(bInheritHandle=bInheritHandle)
 
     def create(self,bInheritHandle = 1):
+        """
+        Creates a c { pipe } instance.
+
+        Args:
+            self: (int): write your description
+            bInheritHandle: (int): write your description
+        """
         # set attr
         attr=SECURITY_ATTRIBUTES()
         attr.lpSecurityDescriptor=0
@@ -132,7 +146,20 @@ class winPipe():
             raise(EOFError(color("[-]: Create Pipe error",'red')))
 
     def read(self,n,timeout=None):
+        """
+        Read up to n bytes from the device.
+
+        Args:
+            self: (todo): write your description
+            n: (todo): write your description
+            timeout: (todo): write your description
+        """
         def count():
+            """
+            Return the total number of the number.
+
+            Args:
+            """
             byteAvail=wintypes.DWORD()
             x=windll.kernel32.PeekNamedPipe(self.hReadPipe,0,0,0,byref(byteAvail),0)
             return byteAvail.value
@@ -154,6 +181,13 @@ class winPipe():
         return Latin1_decode(buf.raw)
 
     def write(self,buf=''):
+        """
+        Writes bytes from the buffer.
+
+        Args:
+            self: (todo): write your description
+            buf: (str): write your description
+        """
         buf=Latin1_encode(buf)
         length=len(buf)
         written=wintypes.DWORD()
@@ -163,9 +197,21 @@ class winPipe():
         return written.value
     
     def getHandle(self):
+        """
+        Get the child of the child.
+
+        Args:
+            self: (todo): write your description
+        """
         return (self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe)
 
     def close(self):
+        """
+        Close the kernel.
+
+        Args:
+            self: (todo): write your description
+        """
         # windll.kernel32.CloseHandle(self.child_hReadPipe)
         # windll.kernel32.CloseHandle(self.child_hWritePipe)
         windll.kernel32.CloseHandle(self.hReadPipe)
@@ -173,6 +219,15 @@ class winPipe():
 
 class winProcess(object):
     def __init__(self,argv,cwd=None,flags=0):
+        """
+        Initialize the pid.
+
+        Args:
+            self: (todo): write your description
+            argv: (list): write your description
+            cwd: (int): write your description
+            flags: (int): write your description
+        """
         self.pipe=winPipe()
         self.hReadPipe,self.hWritePipe,self.child_hReadPipe,self.child_hWritePipe=self.pipe.getHandle()
         self.pid=0
@@ -181,6 +236,15 @@ class winProcess(object):
         self.thandle=0
         self.create(argv,cwd,flags)
     def create(self,argv,cwd=None,flags=None):
+        """
+        Create a process.
+
+        Args:
+            self: (int): write your description
+            argv: (list): write your description
+            cwd: (int): write your description
+            flags: (int): write your description
+        """
         lpCurrentDirectory=cwd
         lpEnvironment=None
         dwCreationFlags=flags
@@ -229,19 +293,54 @@ class winProcess(object):
             raise(EOFError(color("[-]: Create process error",'red')))
 
     def read(self,n,timeout=None):
+        """
+        Read at most n bytes from the socket.
+
+        Args:
+            self: (todo): write your description
+            n: (todo): write your description
+            timeout: (todo): write your description
+        """
         return self.pipe.read(n,timeout=timeout)
     def write(self,buf):
+        """
+        Write the given bytes.
+
+        Args:
+            self: (todo): write your description
+            buf: (str): write your description
+        """
         return self.pipe.write(buf)
     def is_exit(self):
+        """
+        Check if the exit is running.
+
+        Args:
+            self: (todo): write your description
+        """
         x=wintypes.DWORD()
         n=windll.kernel32.GetExitCodeProcess(self.phandle,byref(x))
         if n!=0 and x.value==STILL_ACTIVE:
             return False
         return True
     def close(self):           # need to kill process ..............
+        """
+        Closes the kernel.
+
+        Args:
+            self: (todo): write your description
+        """
         self.pipe.close()
         windll.kernel32.TerminateProcess(self.phandle,1)
     def readm(self,addr,n):
+        """
+        Reads memory from memory.
+
+        Args:
+            self: (todo): write your description
+            addr: (todo): write your description
+            n: (todo): write your description
+        """
         addr=c_size_t(addr)
         handle=windll.kernel32.OpenProcess(PROCESS_VM_READ|PROCESS_VM_WRITE|PROCESS_VM_OPERATION,0,self.pid)
         oldprotect=wintypes.DWORD()
@@ -259,6 +358,14 @@ class winProcess(object):
         return Latin1_decode(buf.raw)
 
     def writem(self,addr,buf):
+        """
+        Writes the pid file.
+
+        Args:
+            self: (todo): write your description
+            addr: (str): write your description
+            buf: (str): write your description
+        """
         buf=Latin1_encode(buf)
         addr=c_size_t(addr)
         n=len(buf)

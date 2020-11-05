@@ -11,6 +11,14 @@ from .context import context
 
 class wincs():
     def __init__(self,ip=None,port=512):
+        """
+        Initialize the connection.
+
+        Args:
+            self: (todo): write your description
+            ip: (str): write your description
+            port: (int): write your description
+        """
         self.wins=None
         self.winc=None
         if ip is None: # server
@@ -21,6 +29,12 @@ class wincs():
         else: # client
             self.winc=remote(ip,port)
     def __winser_thread(self):
+        """
+        Wrap a thread.
+
+        Args:
+            self: (todo): write your description
+        """
         try:
             while(True):
                 (conn, client) = self.wins.accept() # need to used select not accept.
@@ -29,6 +43,14 @@ class wincs():
             raise(EOFError(color("[-]: Exited by CTRL+C",'red')))
 
     def __handle_conn(self,conn,client):
+        """
+        Handle a connection
+
+        Args:
+            self: (todo): write your description
+            conn: (todo): write your description
+            client: (todo): write your description
+        """
         # (conn, client) = args            
         while(1):
             # [0:1]-> opcode;
@@ -67,6 +89,16 @@ class wincs():
                 )  
 
     def __asm_disasm(self,code,addr,arch=None,is_asm=True):
+        """
+        Disasm the code.
+
+        Args:
+            self: (todo): write your description
+            code: (str): write your description
+            addr: (str): write your description
+            arch: (array): write your description
+            is_asm: (bool): write your description
+        """
         if arch is None:
             arch=context.arch
         if is_asm:
@@ -89,10 +121,40 @@ class wincs():
         return rs
 
     def asm(self,asmcode,addr=0,arch=None):
+        """
+        Returns a list of this address.
+
+        Args:
+            self: (todo): write your description
+            asmcode: (str): write your description
+            addr: (str): write your description
+            arch: (str): write your description
+        """
         return self.__asm_disasm(code=asmcode,addr=addr,arch=arch,is_asm=True)
     def disasm(self,machinecode,addr=0,arch=None):
+        """
+        Disasm the machine.
+
+        Args:
+            self: (todo): write your description
+            machinecode: (str): write your description
+            addr: (str): write your description
+            arch: (array): write your description
+        """
         return self.__asm_disasm(code=machinecode,addr=addr,arch=arch,is_asm=False)
     def close(self): # just close connect
+        """
+        Close the connection.
+
+        Args:
+            self: (todo): write your description
+        """
         self.winc.close()
     def close_server(self):
+        """
+        Close the server.
+
+        Args:
+            self: (todo): write your description
+        """
         self.winc.send('\x03')

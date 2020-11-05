@@ -2,12 +2,26 @@ from .misc import Latin1_decode
 
 class winfile(object):
     def __init__(self,fpath=""):
+        """
+        Initialize fpath.
+
+        Args:
+            self: (todo): write your description
+            fpath: (str): write your description
+        """
         self._address=0
         self.imsyms={}
         self.exsyms={}
         self.symbols={}
         self.update(fpath)
     def update(self,fpath):
+        """
+        Update all symms to the given fpath.
+
+        Args:
+            self: (todo): write your description
+            fpath: (str): write your description
+        """
         import pefile
         pe=pefile.PE(fpath)
         if hasattr(pe,"DIRECTORY_ENTRY_IMPORT"):
@@ -33,9 +47,22 @@ class winfile(object):
     
     @property
     def address(self):
+        """
+        The address of this node.
+
+        Args:
+            self: (todo): write your description
+        """
         return self._address
     @address.setter
     def address(self,base):
+        """
+        Add the values of the values.
+
+        Args:
+            self: (todo): write your description
+            base: (str): write your description
+        """
         self._address=base
         for sym in self.imsyms:
             self.imsyms.update({sym:base+self.imsyms[sym]})
