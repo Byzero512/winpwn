@@ -232,8 +232,41 @@ class windbgx():
         return ter.pid
 
     @classmethod
-    def net(clx):
-        pass
+    def net(clx, key, script = ""):
+        showbanner('attaching', 'purple', '[=]')
+        if context.windbgx is None:
+            windbgxPath = debugger[context.arch]['windbgx']
+        else:
+            windbgxPath = context.windbgx
+
+        IP = ''
+        port = 50000
+        if ',' in key:
+            idx = key.find(',')
+            IP = key[0:key.find(',')]
+            port = int(key[key.find(',')+1:])
+        else:
+            IP = key
+
+        load_windbg = [windbgxPath]
+        load_windbg += [
+            "-k net:port={},key={}".format(port, key)]
+
+        script = context.dbginit+'\n' + \
+            debugger_init[context.arch]['windbgx']+'\n'+script+'\n'
+        tmp = tempfile.NamedTemporaryFile(
+            prefix='winpwn_', suffix='.dbg', delete=False)
+        tmp.write(Latin1_encode(script))
+        tmp.flush()
+        tmp.close()
+        load_windbg += ['-c']             # exec command
+        load_windbg += ['"$$><{}'.format(tmp.name) +
+                        ';.shell -x del {}"'.format(tmp.name)]
+
+        ter = subprocess.Popen(' '.join(load_windbg))
+        while(os.path.exists(tmp.name)):    # wait_for_debugger
+            sleep(0.05)
+        return ter.pid
 
 
 class x64dbg():
