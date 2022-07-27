@@ -23,6 +23,5 @@ class context():
     windbgx=None
     x64dbg=None
 
-
     # dev
     devdebug=False
