@@ -69,21 +69,10 @@ if you want to use debugger like gdb-peda, you need to deal with the deps yourse
 1. [pykd](https://githomelab.ru/pykd/pykd)
 2. [bywin](https://github.com/Byzero512/peda-windows/tree/master/windbg/bywin)
 
-#### mingw-gdb
-1. [wibe](https://github.com/Byzero512/peda-windows/tree/master/mingw-gdb/wibe)
-
 ## photos
 
 ### windbgx/windbg
-
 ![windbgx](./img/windbgx.png)
-
-### mingw gdb
-
-![gdb](./img/winpwn1.png)
-
-### x64dbg
-> because lacks some commandline options, so just can use x64dbg attach to process and can not deliver init script yet
 
 ### refs
 1. https://github.com/masthoon/pwintools
