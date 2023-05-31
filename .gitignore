@@ -1,0 +1,4 @@
+build/
+dist/
+winpwn.egg-info/
+winpwn/__pycache__

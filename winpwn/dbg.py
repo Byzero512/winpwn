@@ -18,7 +18,11 @@ class gdb():
         else:
             gdbPath = context.gdb
 
-        load_Dbg = gdbPath+' -p'+' {}'.format(target.pid)+' -q'
+        load_Dbg = gdbPath
+        if isinstance(target, int):
+            load_Dbg += ' -p'+' {}'.format(target)+' -q'
+        else:
+            load_Dbg += ' -p'+' {}'.format(target.pid)+' -q'
 
         def setInfo(sysroot=None):
             Info = ''
@@ -73,11 +77,11 @@ class windbg():
         else:
             windbgPath = context.windbg
         load_windbg = [windbgPath, '-p']
-        # if isinstance(target,process):
-        #     load_windbg.append(str(target.pid))
-        # elif isinstance(target,int):
-        #     load_windbg.append(str(pid))
-        load_windbg.append(str(target.pid))
+
+        if isinstance(target, int):
+            load_windbg.append(target)
+        else:
+            load_windbg.append(str(target.pid))
 
         script = context.dbginit+'\n' + \
             debugger_init[context.arch]['windbg']+'\n'+script+'\n'
@@ -142,11 +146,11 @@ class windbgx():
             windbgxPath = context.windbgx
         load_windbg = [windbgxPath, '-p']
 
-        # if isinstance(target,process):
-        #     load_windbg.append(str(target.pid))
-        # elif isinstance(target,int):
-        #     load_windbg.append(str(pid))
-        load_windbg.append(str(target.pid))
+        if isinstance(target, int):
+            load_windbg.append(target)
+        else:
+            load_windbg.append(str(target.pid))
+
         script = context.dbginit+'\n' + \
             debugger_init[context.arch]['windbgx']+'\n'+script+'\n'
 
