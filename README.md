@@ -1,5 +1,5 @@
 ## winpwn: pwntools for windows
-for CTF windows pwn and IAT/EAT hook
+windows debug and exploit toolset for both user and kernel mode
 
 
 ### pre
