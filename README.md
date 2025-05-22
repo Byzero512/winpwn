@@ -19,9 +19,9 @@ windows debug and exploit toolset for both user and kernel mode
 #### process
 ```python
 process("./pwn")
-process(["./pwn","argv[1]","argv[2]"])
-p.readm(addr,n) # read process memory
-p.writem(addr,con="") # write process memory
+process(["./pwn", "argv[1]", "argv[2]"])
+p.readm(addr, n) # read process memory
+p.writem(addr, con = "") # write process memory
 ```
 
 #### remote
@@ -31,27 +31,27 @@ remote("127.0.0.1", 65535)
 
 #### context
 ```python
-context.timeout=512
-context.debugger="gdb" # or "windbg" or "x64dbg" or "windbgx"
-context.endian="little"
-context.log_level="" # or "debug"
-context.terminal=[ ]
-context.newline="\r\n"
-context.arch="i386" # or "amd64"
-content.pie=None
-context.dbginit=None # used to set debugger init script
-context.windbg=None # set debugger path, or use .winpwn to find debugger path
-context.windbgx=None
-content.gdb=None
-context.x64dbg=None
-context.nocolor=None # if set, will print non-colorful output to terminal
+context.timeout = 512
+context.debugger = "gdb" # or "windbg" or "x64dbg" or "windbgx"
+context.endian = "little"
+context.log_level = "" # or "debug"
+context.terminal = []
+context.newline = "\r\n"
+context.arch = "i386" # or "amd64"
+content.pie = None
+context.dbginit = None # used to set debugger init script
+context.windbg = None # set debugger path, or use .winpwn to find debugger path
+context.windbgx = None
+content.gdb = None
+context.x64dbg = None
+context.nocolor = None # if set, will print non-colorful output to terminal
 ```
 
 #### dbg: windbgx or windbg
 for details, take a look at [dbg](https://github.com/Byzero512/winpwn/blob/b77ee9b23e83ce6dff9869e0adb9d882c7c276bc/winpwn/dbg.py#L139)
 
 ```python
-windbgx.attach(p,script="bp 0x401000") # debug local process
+windbgx.attach(p,script = "bp 0x401000") # debug local process
 windbgx.remote("127.0.0.1,1234") # attach to dbgsrv to debug process remotely
 windbgx.com(...) # debug kernel with serial port
 windbgx.net(...) # debug kernel with kdnet
@@ -59,8 +59,8 @@ windbgx.net(...) # debug kernel with kdnet
 
 #### disable PIE:
 ```python
-PIE(exe_fpath="")
-NOPIE(exe_fpath="")
+PIE(exe_fpath = "")
+NOPIE(exe_fpath = "")
 ```
 
 #### asm/disasm:
@@ -76,10 +76,10 @@ winfile.symbols["CreateProcessA"] # return symbol's IAT/EAT offset of CreateProc
 
 #### wincs(ip,port)
 ```python
-wincs(ip=None,port=512) #run a server to asm/disasm in remote machine for client where does not install keystone/capstone
-wincs(ip='123.123.123.123',512) # create a client to connet to server
-wincs.asm(asmcode='push ebp')
-wincs.disasm(machinecode='\x55')
+wincs(ip = None, port = 512) #run a server to asm/disasm in remote machine for client where does not install keystone/capstone
+wincs(ip = '123.123.123.123', 512) # create a client to connet to server
+wincs.asm(asmcode = 'push ebp')
+wincs.disasm(machinecode = '\x55')
 ```
 
 
