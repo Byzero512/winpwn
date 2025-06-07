@@ -154,7 +154,7 @@ class winPipe():
         return Latin1_decode(buf.raw)
 
     def write(self,buf=''):
-        buf=Latin1_encode(buf)
+        buf=Latin1_encode(buf) if type(buf)==str else buf
         length=len(buf)
         written=wintypes.DWORD()
         x=windll.kernel32.WriteFile(self.hWritePipe,buf,length,byref(written),None)
