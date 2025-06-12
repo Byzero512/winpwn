@@ -1,30 +1,30 @@
 {
     "debugger":{
         "i386": {
-            "x64dbg": "F:\\ctfTools\\debugTools\\x64debug\\release\\x32\\x32dbg.exe", 
-            "gdb": "F:\\ctfTools\\windows-gdb\\mingw-w64-686\\mingw32\\bin\\gdb.exe", 
-            "windbg": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x86\\windbg.exe",
-            "windbgx": "C:\\Users\\byzero\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.WinDbg_8wekyb3d8bbwe\\WinDbgX.exe"
+            "x64dbg": "", 
+            "gdb": "", 
+            "windbg": "",
+            "windbgx": "C:\\Users\\unk\\AppData\\Local\\Microsoft\\WindowsApps\\WinDbgX.exe"
         },
         "amd64": {
-            "x64dbg": "F:\\ctfTools\\debugTools\\x64debug\\release\\x64\\x64dbg.exe", 
-            "gdb": "F:\\ctfTools\\windows-gdb\\mingw-w64-64\\mingw64\\bin\\gdb64.exe", 
-            "windbg": "C:\\Program Files (x86)\\Windows Kits\\10\\Debuggers\\x64\\windbg.exe",
-            "windbgx": "C:\\Users\\byzero\\AppData\\Local\\Microsoft\\WindowsApps\\Microsoft.WinDbg_8wekyb3d8bbwe\\WinDbgX.exe"
+            "x64dbg": "", 
+            "gdb": "", 
+            "windbg": "",
+            "windbgx": "C:\\Users\\unk\\AppData\\Local\\Microsoft\\WindowsApps\\WinDbgX.exe"
         }
     },
     "debugger_init": {
         "i386": {
             "x64dbg": "", 
             "gdb": "", 
-            "windbg": ".load E:\\ShareDir\\building\\bywin\\pykd_ext_2.0.0.24\\x86\\pykd.dll;!py -g E:\\ShareDir\\building\\bywin\\byinit.py;",
-            "windbgx": ".load E:\\ShareDir\\building\\bywin\\pykd_ext_2.0.0.24\\x86\\pykd.dll;!py -g E:\\ShareDir\\building\\bywin\\byinit.py;"
+            "windbg": ".load D:\\plugin\\pykd\\pykd.pyd;!py -g D:\\plugin\\bywin\\byinit.py;.load D:\\ret-sync\\sync32.dll",
+            "windbgx": ".load D:\\plugin\\pykd\\pykd.pyd;!py -g D:\\plugin\\bywin\\byinit.py;.load D:\\ret-sync\\sync32.dll"
         },
         "amd64": {
             "x64dbg": "", 
             "gdb": "", 
-            "windbg": ".load E:\\ShareDir\\building\\bywin\\pykd_ext_2.0.0.24\\x64\\pykd.dll;!py -g E:\\ShareDir\\building\\bywin\\byinit.py;",
-            "windbgx": ".load E:\\ShareDir\\building\\bywin\\pykd_ext_2.0.0.24\\x64\\pykd.dll;!py -g E:\\ShareDir\\building\\bywin\\byinit.py;"
+            "windbg": ".load D:\\plugin\\pykd\\pykd.pyd;!py -g D:\\plugin\\bywin\\byinit.py;.load D:\\ret-sync\\sync64.dll",
+            "windbgx": ".load D:\\plugin\\pykd\\pykd.pyd;!py -g D:\\plugin\\bywin\\byinit.py;.load D:\\ret-sync\\sync64.dll"
         }
     }
 }
