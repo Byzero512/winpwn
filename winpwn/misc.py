@@ -137,7 +137,13 @@ def showbuf(buf,is_noout=None):
     if not is_noout:
         if context.log_level=='debug':
             hexdump(buf)
-        if buf.endswith(context.newline):
-            os.write(sys.stdout.fileno(), Latin1_encode(buf))
+        if type(buf)==str:
+            if buf.endswith(context.newline if type(context.newline)==str else context.newline.decode()):
+                os.write(sys.stdout.fileno(), Latin1_encode(buf))
+            else:
+                os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
         else:
-            os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
+            if buf.endswith(context.newline if type(context.newline)==bytes else context.newline.encode()):
+                os.write(sys.stdout.fileno(), buf)
+            else:
+                os.write(sys.stdout.fileno(), buf+b'\n')
