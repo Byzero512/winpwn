@@ -141,3 +141,52 @@ def showbuf(buf,is_noout=None):
             os.write(sys.stdout.fileno(), Latin1_encode(buf))
         else:
             os.write(sys.stdout.fileno(), Latin1_encode(buf+'\n'))
+
+def cyclic(length=None):
+    """
+    Generate a cyclic pattern of 4‑byte tokens from aaaa to zzzz.
+    If length is given, return only the first `length` bytes.
+    """
+    alphabet = b'abcdefghijklmnopqrstuvwxyz'
+    pattern = b''
+    for a in alphabet:
+        for b in alphabet:
+            for c in alphabet:
+                for d in alphabet:
+                    pattern += bytes([a, b, c, d])
+                    if length is not None and len(pattern) >= length:
+                        return pattern[:length]
+    return pattern
+
+def cyclic_find(subseq):
+    """
+    Return the byte offset of a 4‑byte token in the cyclic pattern.
+    subseq can be:
+      - a 4‑character string (e.g., "aaad")
+      - an integer (e.g., 0x64616161, which is little‑endian for "aaad")
+    Returns -1 if the token is invalid (not in the pattern).
+    """
+    # Convert integer to little‑endian 4‑byte string
+    if isinstance(subseq, int):
+        # Mask to 32 bits and pack as little‑endian
+        subseq = struct.pack('<I', subseq & 0xFFFFFFFF)
+    if isinstance(subseq, bytes):
+        # Decode to Latin1 string
+        subseq = Latin1_decode(subseq)
+    # Now subseq is a str of length 4
+    if len(subseq) != 4:
+        raise ValueError("cyclic_find: substring must be exactly 4 characters")
+    # Convert each character to its index (a=0, b=1, ..., z=25)
+    indices = []
+    for ch in subseq:
+        if 'a' <= ch <= 'z':
+            indices.append(ord(ch) - ord('a'))
+        else:
+            return -1   # character not in alphabet
+    # Compute position in the 4‑character token sequence
+    pos = (indices[0] * 26**3 +
+           indices[1] * 26**2 +
+           indices[2] * 26 +
+           indices[3])
+    # Each token occupies 4 bytes
+    return pos * 4

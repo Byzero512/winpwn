@@ -8,7 +8,7 @@ sys.path=[cwd]+sys.path[1:]
 from .context import context
 from .winpwn import process,remote
 from .dbg import gdb,windbg,x64dbg,windbgx,init_debugger
-from .misc import p8,p16,p32,p64,u8,u16,u32,u64,pause,sleep,NOPIE,PIE,Latin1_encode,Latin1_decode,color,hexdump
+from .misc import p8,p16,p32,p64,u8,u16,u32,u64,pause,sleep,NOPIE,PIE,Latin1_encode,Latin1_decode,color,hexdump,cyclic,cyclic_find
 from .asm import asm,disasm
 from .winfile import winfile
 from .wincs import wincs
@@ -21,7 +21,7 @@ tobyte=Latin1_encode
 __all__=[
     'process','remote','gdb','windbg','x64dbg','windbgx',
     'context',
-    'p8','p16','p32','p64','u8','u16','u32','u64',
+    'p8','p16','p32','p64','u8','u16','u32','u64',"cyclic","cyclic_find"
     'pause','sleep','hexdump','color',"NOPIE","PIE",
     "tostr",'tobyte',
     "asm","disasm",
