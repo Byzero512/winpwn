@@ -236,21 +236,12 @@ class windbgx():
         return ter.pid
 
     @classmethod
-    def net(clx, key, script = ""):
+    def net(clx, key, script = "", port = 50000):
         showbanner('attaching', 'purple', '[=]')
         if context.windbgx is None:
             windbgxPath = debugger[context.arch]['windbgx']
         else:
             windbgxPath = context.windbgx
-
-        IP = ''
-        port = 50000
-        if ',' in key:
-            idx = key.find(',')
-            IP = key[0:key.find(',')]
-            port = int(key[key.find(',')+1:])
-        else:
-            IP = key
 
         load_windbg = [windbgxPath]
         load_windbg += [
