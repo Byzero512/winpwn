@@ -37,6 +37,10 @@ class tube(object):
     def sendline(self,buf,newline=None):
         if newline is None:
             newline=context.newline
+        if isinstance(buf,str) and isinstance(newline,str):
+            buf=Latin1_encode(buf)
+        if isinstance(newline,str) and isinstance(buf,bytes):
+            newline=Latin1_encode(newline)
         return self.send(buf+newline)
 
     def recv(self,n,timeout=None):
@@ -154,7 +158,7 @@ class remote(tube):
         self.sock.settimeout(self.timeout)
         return Latin1_decode(buf)
     def write(self,buf):
-        return self.sock.send(Latin1_encode(buf))
+        return self.sock.send(Latin1_encode(buf) if type(buf)==str else buf)
     def close(self):
         self.sock.close()
         self._is_exit=True
